@@ -15,7 +15,13 @@ export function AutomatonForm(props: {
       props.onSubmit(fromJson(JSON.parse(text) as AutomatonJson));
       setLocalError(undefined);
     } catch (error) {
-      if (!(error instanceof ValidationError) && !(error instanceof SyntaxError)) throw error;
+      if (error instanceof SyntaxError) {
+        setLocalError(
+          'El texto no es un JSON válido. Revisa las comas, las comillas y las llaves.',
+        );
+        return;
+      }
+      if (!(error instanceof ValidationError)) throw error;
       setLocalError(error.message);
     }
   }
