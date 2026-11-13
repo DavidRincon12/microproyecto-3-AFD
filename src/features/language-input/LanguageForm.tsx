@@ -37,6 +37,7 @@ function Field({
   label,
   help,
   value,
+  submitted,
   onChange,
   error: received,
   ref,
@@ -47,6 +48,8 @@ function Field({
   label: string;
   help: string;
   value: string;
+  /** Texto enviado: la marca de posición solo vale mientras el campo no cambie. */
+  submitted: string;
   onChange: (value: string) => void;
   error?: ValidationError;
   ref?: Ref<HTMLInputElement>;
@@ -73,7 +76,7 @@ function Field({
       <p id={`${id}-ayuda`} className={styles.ayuda}>
         {help}
       </p>
-      {error && <Marked text={value} position={error.position} />}
+      {error && value === submitted && <Marked text={value} position={error.position} />}
       {error && (
         <p id={`${id}-error`} role="alert">
           {error.message}
@@ -89,10 +92,12 @@ export function LanguageForm(props: {
 }) {
   const [alphabet, setAlphabet] = useState('');
   const [regex, setRegex] = useState('');
+  const [submitted, setSubmitted] = useState({ alphabet: '', regex: '' });
   const regexInput = useRef<HTMLInputElement>(null);
 
   function submit(event: FormEvent) {
     event.preventDefault();
+    setSubmitted({ alphabet, regex });
     props.onSubmit({ alphabet, regex });
   }
 
@@ -134,6 +139,7 @@ export function LanguageForm(props: {
         label="Alfabeto"
         help="Símbolos de un solo carácter separados por comas, por ejemplo a,b."
         value={alphabet}
+        submitted={submitted.alphabet}
         onChange={setAlphabet}
         error={props.error}
       />
@@ -142,6 +148,7 @@ export function LanguageForm(props: {
         label="Expresión regular"
         help={REGEX_HELP}
         value={regex}
+        submitted={submitted.regex}
         onChange={setRegex}
         error={props.error}
         ref={regexInput}

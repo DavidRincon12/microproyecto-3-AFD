@@ -33,6 +33,7 @@ describe('LanguageForm', () => {
     const onSubmit = vi.fn();
     const { rerender } = render(<LanguageForm onSubmit={onSubmit} />);
     await userEvent.type(screen.getByLabelText('Expresión regular'), 'abc');
+    await userEvent.click(screen.getByRole('button', { name: 'Construir' }));
     const error = new ValidationError(
       '"c" (posición 3) no pertenece al alfabeto {a, b}.',
       'regex',
@@ -59,5 +60,21 @@ describe('LanguageForm', () => {
     );
     expect(screen.getByLabelText('Alfabeto')).toHaveValue('a,b');
     expect(screen.getByLabelText('Expresión regular')).toHaveValue('(a|b)*abb');
+  });
+
+  it('quita la marca de posición cuando se edita la expresión', async () => {
+    const onSubmit = vi.fn();
+    const { rerender } = render(<LanguageForm onSubmit={onSubmit} />);
+    const regex = screen.getByLabelText('Expresión regular');
+    await userEvent.type(regex, 'abc');
+    await userEvent.click(screen.getByRole('button', { name: 'Construir' }));
+    const error = new ValidationError(
+      '"c" (posición 3) no pertenece al alfabeto {a, b}.',
+      'regex',
+      3,
+    );
+    rerender(<LanguageForm onSubmit={onSubmit} error={error} />);
+    await userEvent.type(regex, 'x');
+    expect(screen.queryByText('c', { selector: 'mark' })).not.toBeInTheDocument();
   });
 });
