@@ -1,0 +1,11 @@
+{
+  "description": "Palabras que inician y terminan en a, con e o i en medio",
+  "source": "Creado por el equipo a partir de los ejemplos de clase con vocales",
+  "alphabet": "a,e,i",
+  "regex": "a(e|i)*a",
+  "expected": {
+    "minimalStates": 4,
+    "accepts": ["aa", "aea", "aeia"],
+    "rejects": ["a", "ae", "aaa", "ea"]
+  }
+}

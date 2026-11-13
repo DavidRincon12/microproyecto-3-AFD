@@ -1,0 +1,11 @@
+{
+  "description": "Palabras que inician y terminan en 0, con unos y doses en medio",
+  "source": "Creado por el equipo a partir de los ejercicios de clase con {0, 1, 2}",
+  "alphabet": "0,1,2",
+  "regex": "0(1|2)*0",
+  "expected": {
+    "minimalStates": 4,
+    "accepts": ["00", "010", "0120"],
+    "rejects": ["0", "01", "000", "10"]
+  }
+}

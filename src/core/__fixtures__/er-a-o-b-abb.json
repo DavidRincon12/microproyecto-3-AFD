@@ -1,0 +1,11 @@
+{
+  "description": "Cadenas sobre {a, b} que terminan en abb",
+  "source": "Ejemplo clásico de la construcción de Thompson",
+  "alphabet": "a,b",
+  "regex": "(a|b)*abb",
+  "expected": {
+    "minimalStates": 4,
+    "accepts": ["abb", "aabb", "babb", "ababb"],
+    "rejects": ["", "ab", "abba", "bbb"]
+  }
+}
