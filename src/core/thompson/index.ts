@@ -1,0 +1,1 @@
+export { thompson } from './thompson';

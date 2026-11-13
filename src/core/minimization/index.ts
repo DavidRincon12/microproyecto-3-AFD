@@ -1,0 +1,1 @@
+export { minimize } from './minimize';
