@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from './App.module.css';
 import { ValidationError } from '../core/model';
 import { runPipeline, type PipelineInput, type PipelineResult } from '../core/pipeline';
 import { AutomatonForm } from '../features/automaton-input';
@@ -40,14 +41,21 @@ export function App() {
   }
 
   return (
-    <main>
-      <h1>Autómatas finitos: construcción, determinización y minimización</h1>
-      <div role="tablist" aria-label="Modalidad de entrada">
+    <main className={styles.pagina}>
+      <header className={styles.encabezado}>
+        <h1>Autómatas finitos: construcción, determinización y minimización</h1>
+        <p>
+          Construye un AFD desde una expresión regular o ingresa un autómata, y sigue cada paso
+          hasta el AFD mínimo.
+        </p>
+      </header>
+      <div role="tablist" aria-label="Modalidad de entrada" className={styles.pestanas}>
         {MODES.map((item) => (
           <button
             key={item.mode}
             type="button"
             role="tab"
+            className={styles.pestana}
             aria-selected={mode === item.mode}
             onClick={() => changeMode(item.mode)}
           >
@@ -64,8 +72,12 @@ export function App() {
           onSubmit={(automaton) => run({ mode: 'automaton', automaton })}
         />
       )}
-      {result && <PipelineView result={result} />}
-      {result && <Simulator automaton={result.minimal} />}
+      {result && (
+        <div className={styles.resultados}>
+          <PipelineView result={result} />
+          <Simulator automaton={result.minimal} />
+        </div>
+      )}
     </main>
   );
 }
