@@ -81,3 +81,18 @@ describe('parseRegex: errores', () => {
     expect(error.message).toContain(fragment);
   });
 });
+
+describe('parseRegex: límites', () => {
+  it('rechaza con un error de sintaxis una expresión muy anidada en vez de agotar la pila', () => {
+    const error = errorOf(`${'('.repeat(5000)}a${')'.repeat(5000)}`);
+    expect(error.field).toBe('regex');
+    expect(error.message).toContain('máximo es 200');
+  });
+
+  it('acepta una expresión de 200 caracteres y rechaza una de 201', () => {
+    expect(() => parseRegex('a'.repeat(200), ab)).not.toThrow();
+    expect(errorOf('a'.repeat(201)).message).toBe(
+      'La expresión tiene 201 caracteres y el máximo es 200. Simplifícala.',
+    );
+  });
+});

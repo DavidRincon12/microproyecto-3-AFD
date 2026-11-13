@@ -13,6 +13,8 @@ const POSTFIX: Record<string, 'star' | 'plus' | 'optional'> = {
   '?': 'optional',
 };
 const CANNOT_START_ATOM = new Set(['|', ')', '*', '+', '?']);
+/** Acota la profundidad del árbol para que el análisis y Thompson no agoten la pila. */
+const MAX_LENGTH = 200;
 
 /**
  * Analizador descendente recursivo de la gramática:
@@ -27,6 +29,12 @@ export function parseRegex(text: string, alphabet: ReadonlySet<Sym>): RegexNode 
   if (tokens.length === 0) {
     throw new ValidationError(
       'La expresión regular está vacía. Escribe una expresión, por ejemplo (a|b)*abb.',
+      'regex',
+    );
+  }
+  if (tokens.length > MAX_LENGTH) {
+    throw new ValidationError(
+      `La expresión tiene ${tokens.length} caracteres y el máximo es ${MAX_LENGTH}. Simplifícala.`,
       'regex',
     );
   }
