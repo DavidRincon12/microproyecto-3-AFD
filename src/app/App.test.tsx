@@ -1,7 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { ValidationError } from '../core/model';
+import { runPipeline } from '../core/pipeline';
 import { App } from './App';
+
+// App solo orquesta: se inyectan fallos en su borde con el núcleo para probar cómo los muestra.
+vi.mock('../core/pipeline', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../core/pipeline')>()),
+  runPipeline: vi.fn(),
+}));
+
+async function buildLanguage() {
+  await userEvent.type(screen.getByLabelText('Alfabeto'), 'a,b');
+  await userEvent.type(screen.getByLabelText('Expresión regular'), 'ab');
+  await userEvent.click(screen.getByRole('button', { name: 'Construir' }));
+}
 
 describe('App', () => {
   it('muestra el título de la aplicación', () => {
@@ -20,7 +34,7 @@ describe('App', () => {
       'aria-selected',
       'true',
     );
-    expect(screen.getByLabelText('Alfabeto')).toBeInTheDocument();
+    expect(screen.getByLabelText('Expresión regular')).toBeInTheDocument();
   });
 
   it('cambia al formulario del autómata al elegir la Modalidad B', async () => {
@@ -30,14 +44,27 @@ describe('App', () => {
       'aria-selected',
       'true',
     );
-    expect(screen.queryByLabelText('Alfabeto')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Expresión regular')).not.toBeInTheDocument();
+  });
+
+  it('muestra un error de entrada junto a su campo', async () => {
+    vi.mocked(runPipeline).mockImplementation(() => {
+      throw new ValidationError('Falta cerrar el paréntesis abierto en la posición 1.', 'regex', 1);
+    });
+    render(<App />);
+    await buildLanguage();
+    expect(screen.getByLabelText('Expresión regular')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByRole('alert')).toHaveTextContent('Falta cerrar el paréntesis');
   });
 
   it('anuncia un error inesperado del proceso sin romper la página', async () => {
+    vi.mocked(runPipeline).mockImplementation(() => {
+      throw new Error('fallo interno');
+    });
     render(<App />);
-    await userEvent.type(screen.getByLabelText('Alfabeto'), 'a,b');
-    await userEvent.type(screen.getByLabelText('Expresión regular'), 'ab');
-    await userEvent.click(screen.getByRole('button', { name: 'Construir' }));
-    expect(await screen.findByRole('alert')).toHaveTextContent('Ocurrió un error inesperado');
+    await buildLanguage();
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Ocurrió un error inesperado: Error: fallo interno',
+    );
   });
 });
