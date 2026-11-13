@@ -1,0 +1,81 @@
+.vista {
+  display: grid;
+  gap: var(--espacio-3);
+  padding: var(--espacio-4);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+.pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2);
+}
+
+.pestanas button {
+  border-color: var(--color-borde);
+  background: transparent;
+  color: var(--color-texto);
+}
+
+.pestanas button[aria-selected='true'] {
+  border-color: var(--color-acento);
+  background: var(--color-acento);
+  color: var(--color-acento-texto);
+}
+
+.numero {
+  font-weight: 700;
+}
+
+.comparar {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.comparar input {
+  width: auto;
+}
+
+.resumen {
+  margin-top: 0;
+  color: var(--color-texto-suave);
+}
+
+.comparacion {
+  display: grid;
+  gap: var(--espacio-3);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+.automata {
+  min-width: 0;
+}
+
+.desplazable {
+  overflow-x: auto;
+}
+
+.origen {
+  margin: var(--espacio-3) 0;
+}
+
+.pasos {
+  display: grid;
+  gap: var(--espacio-3);
+  padding-left: var(--espacio-4);
+}
+
+.pasos button {
+  border-color: var(--color-borde);
+  background: var(--color-acento-suave);
+  color: var(--color-texto);
+  font-weight: 600;
+}
+
+.pasos button[aria-pressed='true'] {
+  border-color: var(--color-acento);
+  outline: 2px solid var(--color-acento);
+}
