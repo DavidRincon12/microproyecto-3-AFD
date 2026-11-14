@@ -1,0 +1,22 @@
+{
+  "description": "AFND de clase con estados A, B, C y transiciones incompletas",
+  "source": "Presentación de conversión AFND-AFD, ejemplo con A, B, C",
+  "automaton": {
+    "states": ["A", "B", "C"],
+    "alphabet": ["0", "1"],
+    "initial": "A",
+    "finals": ["C"],
+    "transitions": [
+      ["A", "0", "B"],
+      ["A", "1", "A"],
+      ["A", "1", "C"],
+      ["B", "0", "C"],
+      ["C", "1", "B"]
+    ]
+  },
+  "expected": {
+    "deterministic": false,
+    "accepts": ["00", "10", "110"],
+    "rejects": ["", "0", "1", "01"]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "AFD con fusión transitiva de tres estados (B, E, G)",
+  "source": "Diseñado para pruebas de unión transitiva de clases de equivalencia",
+  "automaton": {
+    "states": ["A", "B", "C", "D", "E", "G"],
+    "alphabet": ["0", "1"],
+    "initial": "A",
+    "finals": ["D"],
+    "transitions": [
+      ["A", "0", "B"],
+      ["A", "1", "C"],
+      ["B", "0", "D"],
+      ["B", "1", "E"],
+      ["C", "0", "C"],
+      ["C", "1", "B"],
+      ["D", "0", "E"],
+      ["D", "1", "C"],
+      ["E", "0", "D"],
+      ["E", "1", "G"],
+      ["G", "0", "D"],
+      ["G", "1", "B"]
+    ]
+  },
+  "expected": {
+    "deterministic": true,
+    "accepts": ["00"],
+    "rejects": ["", "0", "1"]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "description": "AFND de clase con estados q0, q1, q2",
+  "source": "Presentación de conversión AFND-AFD, ejemplo con q0, q1, q2",
+  "automaton": {
+    "states": ["q0", "q1", "q2"],
+    "alphabet": ["a", "b"],
+    "initial": "q0",
+    "finals": ["q2"],
+    "transitions": [
+      ["q0", "a", "q0"],
+      ["q0", "a", "q1"],
+      ["q0", "b", "q0"],
+      ["q1", "b", "q2"]
+    ]
+  },
+  "expected": {
+    "deterministic": false,
+    "accepts": ["ab", "aab", "bab", "aaab"],
+    "rejects": ["", "a", "b", "ba"]
+  }
+}

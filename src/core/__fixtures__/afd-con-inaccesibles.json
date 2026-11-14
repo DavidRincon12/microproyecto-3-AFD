@@ -1,0 +1,27 @@
+{
+  "description": "AFD con estados inaccesibles D y E",
+  "source": "Diseñado para pruebas de eliminación de inaccesibles",
+  "automaton": {
+    "states": ["A", "B", "C", "D", "E"],
+    "alphabet": ["0", "1"],
+    "initial": "A",
+    "finals": ["C", "E"],
+    "transitions": [
+      ["A", "0", "B"],
+      ["A", "1", "A"],
+      ["B", "0", "C"],
+      ["B", "1", "B"],
+      ["C", "0", "C"],
+      ["C", "1", "A"],
+      ["D", "0", "E"],
+      ["D", "1", "D"],
+      ["E", "0", "D"],
+      ["E", "1", "E"]
+    ]
+  },
+  "expected": {
+    "deterministic": true,
+    "accepts": ["00", "100", "0100"],
+    "rejects": ["", "0", "1", "01"]
+  }
+}

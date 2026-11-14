@@ -1,0 +1,16 @@
+{
+  "description": "AFD incompleto que requiere estado de error",
+  "source": "Diseñado para pruebas de completitud y estado error",
+  "automaton": {
+    "states": ["A", "B"],
+    "alphabet": ["0", "1"],
+    "initial": "A",
+    "finals": ["B"],
+    "transitions": [["A", "0", "B"]]
+  },
+  "expected": {
+    "deterministic": true,
+    "accepts": ["0"],
+    "rejects": ["", "1", "00", "01"]
+  }
+}

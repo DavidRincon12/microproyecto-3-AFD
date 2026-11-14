@@ -1,0 +1,30 @@
+{
+  "description": "AFND de clase grande con siete estados A a G",
+  "source": "Presentación de conversión AFND-AFD, ejemplo de 7 estados",
+  "automaton": {
+    "states": ["A", "B", "C", "D", "E", "F", "G"],
+    "alphabet": ["0", "1"],
+    "initial": "A",
+    "finals": ["G"],
+    "transitions": [
+      ["A", "0", "B"],
+      ["A", "0", "C"],
+      ["A", "1", "A"],
+      ["B", "0", "D"],
+      ["B", "1", "E"],
+      ["C", "0", "F"],
+      ["C", "1", "G"],
+      ["D", "0", "D"],
+      ["D", "1", "E"],
+      ["E", "0", "F"],
+      ["E", "1", "G"],
+      ["F", "0", "D"],
+      ["F", "1", "E"],
+      ["G", "0", "F"],
+      ["G", "1", "G"]
+    ]
+  },
+  "expected": {
+    "deterministic": false
+  }
+}
