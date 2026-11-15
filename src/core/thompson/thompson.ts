@@ -1,4 +1,12 @@
-import { EPSILON, fromJson, type StageResult, type StateId, type Step, type Sym } from '../model';
+import {
+  EPSILON,
+  fromJson,
+  indexToLetterState,
+  type StageResult,
+  type StateId,
+  type Step,
+  type Sym,
+} from '../model';
 import type { RegexNode } from '../regex';
 
 interface Fragment {
@@ -41,7 +49,7 @@ export function thompson(ast: RegexNode, alphabet: ReadonlySet<Sym>): StageResul
   const transitions: [StateId, Sym, StateId][] = [];
   const steps: Step[] = [];
   const newState = (): StateId => {
-    const state = `q${states.length}`;
+    const state = indexToLetterState(states.length);
     states.push(state);
     return state;
   };

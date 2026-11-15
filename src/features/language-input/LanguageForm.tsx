@@ -13,7 +13,13 @@ const EXAMPLES = Object.values(
     eager: true,
     import: 'default',
   }),
-);
+).sort((a, b) => {
+  const aIsNumeric = /^[0-9, ]+$/.test(a.alphabet);
+  const bIsNumeric = /^[0-9, ]+$/.test(b.alphabet);
+  if (aIsNumeric && !bIsNumeric) return -1;
+  if (!aIsNumeric && bIsNumeric) return 1;
+  return a.description.localeCompare(b.description);
+});
 const OPERATORS = [EPSILON, '|', '*', '+', '?', '(', ')'];
 const REGEX_HELP =
   'Unión |, concatenación sin operador, * cero o más, + una o más, ? opcional, ( ) agrupación y ε cadena vacía. Los operadores *, + y ? se aplican antes que la concatenación, y esta antes que |.';
@@ -42,6 +48,7 @@ function Field({
   error: received,
   ref,
   className,
+  placeholder,
   children,
 }: {
   field: InputField;
@@ -54,6 +61,7 @@ function Field({
   error?: ValidationError;
   ref?: Ref<HTMLInputElement>;
   className?: string;
+  placeholder?: string;
   children?: ReactNode;
 }) {
   const id = `lenguaje-${field}`;
@@ -65,6 +73,7 @@ function Field({
         id={id}
         ref={ref}
         className={className}
+        placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-invalid={error ? true : undefined}
@@ -137,7 +146,8 @@ export function LanguageForm(props: {
       <Field
         field="alphabet"
         label="Alfabeto"
-        help="Símbolos de un solo carácter separados por comas, por ejemplo a,b."
+        help="Símbolos de un solo carácter separados por comas, por ejemplo 0,1."
+        placeholder="0,1"
         value={alphabet}
         submitted={submitted.alphabet}
         onChange={setAlphabet}
@@ -147,6 +157,7 @@ export function LanguageForm(props: {
         field="regex"
         label="Expresión regular"
         help={REGEX_HELP}
+        placeholder="(0|1)*011"
         value={regex}
         submitted={submitted.regex}
         onChange={setRegex}

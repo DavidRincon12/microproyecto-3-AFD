@@ -168,13 +168,13 @@ Cada símbolo es exactamente un carácter, contado por punto de código para que
 
 El lineamiento técnico pide nombres consistentes que conserven su correspondencia con los estados originales. La aplicación sigue la notación de clase:
 
-| Situación                                 | Regla                                           | Ejemplo                   |
-| ----------------------------------------- | ----------------------------------------------- | ------------------------- |
-| Construcción de Thompson                  | `q` y un consecutivo desde 0                    | `q0`, `q1`, `q2`          |
-| Subconjunto en la determinización         | concatenación en el orden del autómata original | `{q2, q0}` → `q0q2`       |
-| Subconjunto vacío                         | estado sumidero                                 | `error`                   |
-| La concatenación coincide con otro estado | llaves y comas                                  | `{A,B}` si ya existe `AB` |
-| Grupo fusionado en la minimización        | paréntesis y comas, en el orden del autómata    | `(B,E)`                   |
+| Situación                                 | Regla                                                                 | Ejemplo                   |
+| ----------------------------------------- | --------------------------------------------------------------------- | ------------------------- |
+| Construcción de Thompson                  | Letras mayúsculas consecutivas (A, B, C... y A1, B1... al superar 26) | `A`, `B`, `C`             |
+| Subconjunto en la determinización         | concatenación en el orden del autómata original                       | `{B, D}` → `BD`           |
+| Subconjunto vacío                         | estado sumidero                                                       | `error`                   |
+| La concatenación coincide con otro estado | llaves y comas                                                        | `{A,B}` si ya existe `AB` |
+| Grupo fusionado en la minimización        | paréntesis y comas, en el orden del autómata                          | `(B,E)`                   |
 
 Además del nombre, cada autómata generado guarda en `origin` el conjunto de estados de la etapa anterior del que proviene cada estado nuevo, y la interfaz lo muestra como «AC proviene de {A, C}».
 
@@ -244,7 +244,7 @@ Cada error de sintaxis se informa con su posición:
 
 ### 4.3 Construcción de Thompson (RF-03)
 
-`thompson` recorre el árbol en postorden y construye un fragmento de AFND-ε por nodo, siempre con un solo estado inicial y un solo estado final. Los estados se llaman `q0`, `q1`… en el orden en que se crean.
+`thompson` recorre el árbol en postorden y construye un fragmento de AFND-ε por nodo, siempre con un solo estado inicial y un solo estado final. Los estados se nombran con letras mayúsculas (`A`, `B`, `C`… y `A1`, `B1`… si superan 26) en el orden en que se crean, alineados con la convención del cuaderno de clase y usando símbolos numéricos (`0, 1`) para las transiciones.
 
 | Nodo               | Fragmento                                                                             |
 | ------------------ | ------------------------------------------------------------------------------------- |
@@ -258,7 +258,7 @@ Cada error de sintaxis se informa con su posición:
 
 La concatenación une los fragmentos con una transición ε en lugar de fusionar estados, porque así cada paso de la explicación muestra un fragmento completo y fácil de reconocer.
 
-Con el alfabeto `a,b` y la expresión `(a|b)*abb`, la construcción genera 14 estados en diez pasos, uno por nodo del árbol: los fragmentos de `a` (`q0`, `q1`) y de `b` (`q2`, `q3`); la unión, con nuevo inicial `q4` y nuevo final `q5`; la estrella, con `q6` y `q7` alrededor de `q4…q5`; y los fragmentos de `a`, `b` y `b` (`q8` a `q13`), concatenados en orden con transiciones ε. El AFND-ε resultante tiene como inicial a `q6` y como único final a `q13`; la conversión a AFD lo reduce a 5 estados y la minimización a 4.
+Con el alfabeto numérico `0,1` y la expresión `(0|1)*011` (o sobre `a,b` con `(a|b)*abb`), la construcción genera 14 estados en diez pasos, uno por nodo del árbol: los fragmentos iniciales con letras mayúsculas (`A`, `B`, `C`...), las uniones y estrellas con sus nuevos estados iniciales y finales, y las concatenaciones correspondientes. El AFND-ε resultante tiene estados de `A` a `N`, inicial `G` y único final `N`; la conversión a AFD lo reduce a 5 estados (con nombres compuestos como `ACE`, `BD`) y la minimización a 4.
 
 ### 4.4 Clasificación AFD o AFND (RF-05)
 
@@ -432,7 +432,7 @@ Cada algoritmo genera su propia explicación como una lista de pasos (sección 3
 
 ## 7. Validación
 
-El proyecto tiene 229 pruebas automáticas con Vitest, que se ejecutan con `npm test` y en el CI de cada pull request junto con el lint, la revisión de tipos y el build. Las pruebas unitarias cubren cada algoritmo con sus casos borde, y las de interfaz usan Testing Library. Además, `src/core/pipeline/fixtures.test.ts` pasa todos los ejemplos de clase resueltos a mano (`src/core/__fixtures__/`) por el proceso completo y el simulador, y comprueba su clasificación, el tamaño del AFD mínimo y las cadenas que deben aceptarse y rechazarse.
+El proyecto tiene 240 pruebas automáticas con Vitest, que se ejecutan con `npm test` y en el CI de cada pull request junto con el lint, la revisión de tipos y el build. Las pruebas unitarias cubren cada algoritmo con sus casos borde, y las de interfaz usan Testing Library. Además, `src/core/pipeline/fixtures.test.ts` pasa todos los ejemplos de clase resueltos a mano (`src/core/__fixtures__/`) por el proceso completo y el simulador, y comprueba su clasificación, el tamaño del AFD mínimo y las cadenas que deben aceptarse y rechazarse.
 
 La validación funcional está en la matriz de pruebas (`docs/matriz-de-pruebas.md`), con 31 casos de las dos modalidades y capturas de la aplicación como evidencia en `docs/evidencias/`.
 
@@ -442,5 +442,5 @@ La validación funcional está en la matriz de pruebas (`docs/matriz-de-pruebas.
 
 - La expresión regular admite hasta 200 caracteres, para que el análisis y la construcción no agoten la pila del navegador.
 - La conversión AFND → AFD se detiene si el AFD tendría más de 200 estados, porque la construcción por subconjuntos puede crecer de forma exponencial.
-- Los estados que provienen de Thompson concatenan muchos nombres (`q0q1q2q4q5q7q8q9q10`), lo que alarga los diagramas; se aceptó así porque esa convención conserva la correspondencia con los estados originales que pide el enunciado.
+- Los estados compuestos que provienen de la determinización concatenan las letras de sus subconjuntos originales (`ACE`, `BD`, etc.), manteniendo la legibilidad y la convención de los apuntes de clase.
 - El módulo WebAssembly de Graphviz pesa varios megabytes, lo que hace más lenta la primera carga del diagrama.

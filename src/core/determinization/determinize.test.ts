@@ -175,7 +175,7 @@ describe('determinize: explicación', () => {
 
   it('empieza por la clausura-ε del inicial cuando hay transiciones ε', () => {
     const stage = determinize(fromRegex('ab', ['a', 'b']));
-    expect(stage.steps[0].title).toBe('Clausura-ε de {q0}');
+    expect(stage.steps[0].title).toBe('Clausura-ε de {A}');
     expect(stage.steps[1].table?.headers).toContain('Clausura-ε');
   });
 });

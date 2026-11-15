@@ -1,5 +1,16 @@
 import { ERROR_STATE, type StateId } from './automaton';
 
+/** Convierte un índice numérico a nombre de estado con letras: 0 → 'A', 25 → 'Z', 26 → 'A1', etc. */
+export function indexToLetterState(index: number): StateId {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if (index < letters.length) {
+    return letters[index];
+  }
+  const letter = letters[index % letters.length];
+  const cycle = Math.floor(index / letters.length);
+  return `${letter}${cycle}`;
+}
+
 /** Concatena en el orden de `order`; el conjunto vacío da ERROR_STATE. {q2, q0} → 'q0q2'. */
 export function subsetName(subset: Iterable<StateId>, order: readonly StateId[]): StateId {
   const members = new Set(subset);

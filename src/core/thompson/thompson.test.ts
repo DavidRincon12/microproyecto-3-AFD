@@ -20,11 +20,11 @@ describe('thompson: estructura', () => {
     expect(json.transitions).toHaveLength(transitions);
   });
 
-  it('nombra los estados q0, q1… en el orden en que se crean', () => {
+  it('nombra los estados con letras mayúsculas en el orden en que se crean', () => {
     const json = toJson(build('a|b').automaton);
-    expect(json.states).toEqual(['q0', 'q1', 'q2', 'q3', 'q4', 'q5']);
-    expect(json.initial).toBe('q4');
-    expect(json.finals).toEqual(['q5']);
+    expect(json.states).toEqual(['A', 'B', 'C', 'D', 'E', 'F']);
+    expect(json.initial).toBe('E');
+    expect(json.finals).toEqual(['F']);
   });
 
   it('produce un solo estado final', () => {
@@ -61,11 +61,11 @@ describe('thompson: explicación', () => {
   it('explica la unión con los estados que crea', () => {
     const union = build('a|b').steps[2];
     expect(union.title).toBe('Unión de a y b');
-    expect(union.detail).toContain('q4');
-    expect(union.detail).toContain('q5');
+    expect(union.detail).toContain('E');
+    expect(union.detail).toContain('F');
   });
 
   it('resume el autómata construido', () => {
-    expect(build('a').summary).toBe('AFND-ε con 2 estados: inicial q0 y final q1.');
+    expect(build('a').summary).toBe('AFND-ε con 2 estados: inicial A y final B.');
   });
 });

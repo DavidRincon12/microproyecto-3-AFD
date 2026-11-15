@@ -13,5 +13,5 @@ export {
   type Sym,
 } from './automaton';
 export { NotImplementedError, ValidationError, type InputField } from './errors';
-export { mergedName, subsetName } from './naming';
+export { indexToLetterState, mergedName, subsetName } from './naming';
 export type { StageId, StageResult, Step, Table } from './stage';

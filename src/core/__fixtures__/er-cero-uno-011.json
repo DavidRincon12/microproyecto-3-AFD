@@ -1,0 +1,11 @@
+{
+  "description": "Cadenas sobre {0, 1} que terminan en 011",
+  "source": "Ejemplo de clase con alfabeto numérico {0, 1}",
+  "alphabet": "0,1",
+  "regex": "(0|1)*011",
+  "expected": {
+    "minimalStates": 4,
+    "accepts": ["011", "0011", "1011", "01011"],
+    "rejects": ["", "01", "0110", "111"]
+  }
+}

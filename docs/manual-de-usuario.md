@@ -97,13 +97,14 @@ Los operadores `*`, `+` y `?` se aplican primero, después la concatenación y a
 
 | Lenguaje                                                          | Alfabeto | Expresión    |
 | ----------------------------------------------------------------- | -------- | ------------ |
+| Cadenas que terminan en `011`                                     | `0,1`    | `(0\|1)*011` |
+| Palabras que inician y terminan en `0`, con unos y doses en medio | `0,1,2`  | `0(1\|2)*0`  |
 | Cadenas que terminan en `abb`                                     | `a,b`    | `(a\|b)*abb` |
 | Palabras que inician y terminan en `a`, con `e` o `i` en medio    | `a,e,i`  | `a(e\|i)*a`  |
-| Palabras que inician y terminan en `0`, con unos y doses en medio | `0,1,2`  | `0(1\|2)*0`  |
 
-### 2.4 Ejemplo completo: `(a|b)*abb`
+### 2.4 Ejemplo completo: `(0|1)*011`
 
-Con el alfabeto `a,b` y la expresión `(a|b)*abb`, la construcción de Thompson genera un AFND-ε de 14 estados (inicial `q6`, final `q13`). La clasificación lo identifica como no determinista por sus transiciones ε, la conversión produce un AFD de 5 estados, ninguno es inaccesible y la minimización fusiona dos de ellos, de modo que el AFD mínimo tiene 4 estados. El simulador acepta `abb` y `aabb` y rechaza `ab` y la cadena vacía.
+Con el alfabeto numérico `0,1` y la expresión `(0|1)*011` (o equivalentemente `(a|b)*abb`), la construcción genera un AFND-ε de 14 estados con letras mayúsculas de la `A` a la `N` (inicial `G`, final `N`), siguiendo la convención de los apuntes de clase. La clasificación lo identifica como no determinista por sus transiciones ε, la conversión produce un AFD de 5 estados (con nombres compuestos por las letras agrupadas), ninguno es inaccesible y la minimización fusiona dos de ellos mediante la matriz triangular, de modo que el AFD mínimo (AFDM) tiene 4 estados. El simulador acepta `011` y `0011` y rechaza `01` y la cadena vacía.
 
 ### 2.5 Errores comunes
 

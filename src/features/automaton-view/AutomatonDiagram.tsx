@@ -46,8 +46,8 @@ export function AutomatonDiagram(props: { automaton: Automaton; highlight?: read
         margin: '1rem 0',
         padding: '1rem',
         background: '#ffffff',
-        border: '1px solid var(--color-border, #e2e8f0)',
-        borderRadius: '0.5rem',
+        border: '1px solid var(--color-borde, #d6d6e3)',
+        borderRadius: 'var(--radio, 0.5rem)',
         overflowX: 'auto',
         minHeight: '120px',
         display: 'flex',
@@ -56,7 +56,7 @@ export function AutomatonDiagram(props: { automaton: Automaton; highlight?: read
       }}
     >
       {loading && (
-        <p style={{ color: 'var(--color-text-muted, #64748b)' }}>
+        <p style={{ color: 'var(--color-texto-suave, #55556b)' }}>
           Generando diagrama con Graphviz...
         </p>
       )}
