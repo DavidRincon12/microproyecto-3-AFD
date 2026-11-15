@@ -16,7 +16,7 @@
   },
   "expected": {
     "deterministic": false,
-    "accepts": ["00", "10", "110"],
-    "rejects": ["", "0", "1", "01"]
+    "accepts": ["00", "1", "110"],
+    "rejects": ["", "0", "10", "01"]
   }
 }
