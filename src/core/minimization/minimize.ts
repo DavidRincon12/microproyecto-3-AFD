@@ -95,28 +95,28 @@ export function minimize(dfa: Automaton): StageResult {
     };
   }
 
-  // Matriz triangular inferior: marcas 'X', 'NF', 'nf', 'F', ''
+  // Matriz triangular inferior: marcas 'X' (distinguible), 'O' (equivalente/fusión), '≡' (diagonal)
   // Par (i, j) con i > j
   const matrix: string[][] = Array.from({ length: n }, () => Array(n).fill(''));
 
   for (let i = 0; i < n; i++) {
-    matrix[i][i] = 'X';
+    matrix[i][i] = '≡';
   }
 
-  // Paso 2: Marcado inicial por estados finales / no finales
+  // Paso 2: Marcado inicial por estados terminales vs no terminales
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < i; j++) {
       const iFinal = finals.has(statesList[i]);
       const jFinal = finals.has(statesList[j]);
       if (iFinal !== jFinal) {
-        matrix[i][j] = 'NF';
+        matrix[i][j] = 'X';
       }
     }
   }
 
   function generateTableSnapshot(): Table {
     // Columnas 0 a n-2 (encabezados de columnas son los estados de 0 a n-2)
-    const headers = ['Estado', ...statesList.slice(0, n - 1)];
+    const headers = ['Q', ...statesList.slice(0, n - 1)];
     const rows: string[][] = [];
 
     // Filas 1 a n-1
@@ -126,7 +126,7 @@ export function minimize(dfa: Automaton): StageResult {
         if (j < i) {
           row.push(matrix[i][j] || '·');
         } else if (j === i) {
-          row.push('X');
+          row.push('≡');
         } else {
           row.push('');
         }
@@ -137,9 +137,9 @@ export function minimize(dfa: Automaton): StageResult {
   }
 
   steps.push({
-    title: 'Matriz inicial de pares distinguibles',
+    title: 'Matriz inicial bajo la diagonal principal',
     detail:
-      'Se marcan con NF los pares distinguibles de orden 0 (donde un estado es final y el otro no) y con X la diagonal.',
+      'Se marca la diagonal con ≡ y con X las posiciones donde un estado es terminal y el otro no (orden 0).',
     table: generateTableSnapshot(),
   });
 
@@ -149,7 +149,7 @@ export function minimize(dfa: Automaton): StageResult {
 
   while (changed) {
     changed = false;
-    const passDetails: string[] = [];
+    const analysisRows: string[][] = [];
 
     for (let i = 1; i < n; i++) {
       for (let j = 0; j < i; j++) {
@@ -157,40 +157,65 @@ export function minimize(dfa: Automaton): StageResult {
 
         const s1 = statesList[i];
         const s2 = statesList[j];
+        const pairName = `(${s2},${s1})`;
+
+        let markedThisPair = false;
+        const analysisParts: string[] = [];
+        let allFallOnDiagonal = true;
 
         for (const a of alphabet) {
           const t1 = delta.get(s1)!.get(a)!;
           const t2 = delta.get(s2)!.get(a)!;
 
           if (t1 === t2) {
-            passDetails.push(`(${s2},${s1}),${a} → (${t2},${t1}): cae en la diagonal`);
+            analysisParts.push(`${a}: (${t2},${t1}) cae en ≡`);
             continue;
           }
 
+          allFallOnDiagonal = false;
           const idx1 = statesList.indexOf(t1);
           const idx2 = statesList.indexOf(t2);
           const maxIdx = Math.max(idx1, idx2);
           const minIdx = Math.min(idx1, idx2);
 
           const targetMark = matrix[maxIdx][minIdx];
-          if (targetMark === 'NF' || targetMark === 'nf') {
-            matrix[i][j] = 'nf';
+          if (targetMark === 'X') {
+            matrix[i][j] = 'X';
             changed = true;
-            passDetails.push(
-              `(${s2},${s1}),${a} → (${statesList[minIdx]},${statesList[maxIdx]}): marcado como ${targetMark}, se marca nf`,
-            );
+            markedThisPair = true;
+            analysisParts.push(`${a}: (${statesList[minIdx]},${statesList[maxIdx]}) marcado con X`);
             break;
+          } else {
+            analysisParts.push(`${a}: (${statesList[minIdx]},${statesList[maxIdx]}) sin marcar`);
           }
         }
+
+        let resultTag: string;
+        if (markedThisPair) {
+          resultTag = `m${pairName}`;
+        } else if (allFallOnDiagonal) {
+          resultTag = `f${pairName}`;
+        } else {
+          resultTag = `p${pairName}`;
+        }
+
+        analysisRows.push([pairName, analysisParts.join('; '), resultTag]);
       }
     }
 
-    if (passDetails.length > 0) {
+    if (analysisRows.length > 0) {
       steps.push({
-        title: `Pasada ${passNumber} de la tabla de pares`,
-        detail:
-          passDetails.slice(0, 5).join('; ') +
-          (passDetails.length > 5 ? ` (y ${passDetails.length - 5} comparaciones más)` : '.'),
+        title: `Pasada ${passNumber}: análisis par por par [m, f, p]`,
+        detail: `Análisis de pares en la pasada ${passNumber}. m: marcar con X; f: fusionar (cae en ≡); p: pendiente a la siguiente iteración.`,
+        table: {
+          headers: ['Par', 'Análisis', 'Resultado'],
+          rows: analysisRows,
+        },
+      });
+
+      steps.push({
+        title: `Matriz tras la pasada ${passNumber}`,
+        detail: `Estado de la matriz triangular tras completar la pasada ${passNumber}.`,
         table: generateTableSnapshot(),
       });
     }
@@ -198,14 +223,21 @@ export function minimize(dfa: Automaton): StageResult {
     passNumber++;
   }
 
-  // Paso 4: Identificar pares equivalentes / fusionables ('F')
+  // Paso 4: Identificar pares equivalentes / fusionables ('O')
   for (let i = 1; i < n; i++) {
     for (let j = 0; j < i; j++) {
       if (matrix[i][j] === '') {
-        matrix[i][j] = 'F';
+        matrix[i][j] = 'O';
       }
     }
   }
+
+  steps.push({
+    title: 'Matriz final de equivalencias y fusiones',
+    detail:
+      'Las posiciones marcadas con O representan pares de estados equivalentes que se fusionan para conformar el AFDM.',
+    table: generateTableSnapshot(),
+  });
 
   // Union-Find para agrupar estados equivalentes de forma transitiva
   const parent = Array.from({ length: n }, (_, i) => i);
@@ -221,7 +253,7 @@ export function minimize(dfa: Automaton): StageResult {
 
   for (let i = 1; i < n; i++) {
     for (let j = 0; j < i; j++) {
-      if (matrix[i][j] === 'F') {
+      if (matrix[i][j] === 'O') {
         union(i, j);
       }
     }

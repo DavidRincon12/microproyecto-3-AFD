@@ -134,8 +134,8 @@ La Modalidad B recibe un autómata finito, determinista o no determinista, defin
 1. Elige la pestaña **«Modalidad B: autómata»**.
 2. En **«Conjunto de Estados (Q)»**, escribe los nombres de los estados separados por comas, por ejemplo `A, B, C, D` o `q0, q1, q2`. Los nombres solo pueden tener letras, dígitos y guion bajo, y no se puede usar `error`, porque está reservado para el estado sumidero que crea la aplicación.
 3. En **«Alfabeto de Entrada (Σ)»**, escribe los símbolos separados por comas, por ejemplo `0, 1`. Siguen las mismas reglas de la Modalidad A: un carácter por símbolo y sin caracteres reservados.
-4. Elige el **estado inicial** en la lista desplegable y marca las casillas de los **estados finales**.
-5. Completa la **cuadrícula de transiciones**, que tiene una fila por estado y una columna por símbolo, más la columna `ε`. En cada celda escribe el estado destino; para un autómata no determinista, escribe varios destinos separados por comas (`A, C`). Deja la celda vacía si no hay transición.
+4. Elige el **estado inicial (q0)** en la lista desplegable y marca las casillas de los **estados terminales (QT)**.
+5. Completa la **cuadrícula de transiciones**, que tiene una fila por estado y una columna por símbolo del alfabeto (encabezado `Q`). En cada celda escribe el estado destino; para un autómata no determinista, escribe varios destinos separados por comas (`A, C`). Deja la celda vacía o con un guion si no hay transición.
 6. Pulsa **«Procesar Autómata»**.
 
 En lugar de llenar el formulario puedes elegir uno de los ejemplos de clase en **«Cargar ejemplo de clase predefinido»**, que completa todos los campos.

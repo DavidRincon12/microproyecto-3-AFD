@@ -66,15 +66,6 @@ function StagePanel(props: { stage: StageResult; minimal: Automaton; compare: bo
     <>
       <h2>{stage.title}</h2>
       <p className={styles.resumen}>{stage.summary}</p>
-      <div className={props.compare ? styles.comparacion : undefined}>
-        <AutomatonPanel
-          label="Autómata de la etapa"
-          automaton={stage.automaton}
-          highlight={highlight}
-        />
-        {props.compare && <AutomatonPanel label="AFD mínimo" automaton={props.minimal} />}
-      </div>
-      {stage.automaton.origin && <Origin origin={stage.automaton.origin} />}
       {stage.steps.length > 0 && (
         <ol aria-label="Pasos" className={styles.pasos}>
           {stage.steps.map((step, i) => (
@@ -92,6 +83,15 @@ function StagePanel(props: { stage: StageResult; minimal: Automaton; compare: bo
           ))}
         </ol>
       )}
+      <div className={props.compare ? styles.comparacion : undefined}>
+        <AutomatonPanel
+          label="Autómata de la etapa"
+          automaton={stage.automaton}
+          highlight={highlight}
+        />
+        {props.compare && <AutomatonPanel label="AFD mínimo" automaton={props.minimal} />}
+      </div>
+      {stage.automaton.origin && <Origin origin={stage.automaton.origin} />}
     </>
   );
 }

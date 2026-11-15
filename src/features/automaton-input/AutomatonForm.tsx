@@ -1,7 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { parseAlphabet } from '../../core/alphabet';
 import {
-  EPSILON,
   ERROR_STATE,
   fromJson,
   ValidationError,
@@ -224,7 +223,7 @@ export function AutomatonForm(props: {
 
     // Construcción de transiciones desde la cuadrícula
     const transitions: [StateId, Sym, StateId][] = [];
-    const allSymbols = [...alphabet, EPSILON];
+    const allSymbols = [...alphabet];
 
     for (const from of parsedStates) {
       for (const sym of allSymbols) {
@@ -384,7 +383,7 @@ export function AutomatonForm(props: {
             </div>
 
             <div className={styles.fieldGroup}>
-              <span className={styles.fieldLabel}>Estados Finales / Aceptación (F):</span>
+              <span className={styles.fieldLabel}>Estados Terminales (QT):</span>
               <div className={styles.checkboxGrid}>
                 {parsedStates.map((st, idx) => (
                   <label key={`${st}-${idx}`} className={styles.checkboxLabel}>
@@ -409,13 +408,12 @@ export function AutomatonForm(props: {
                 <table className={styles.matrixTable}>
                   <thead>
                     <tr>
-                      <th scope="col">Estado</th>
+                      <th scope="col">Q</th>
                       {parsedAlphabet.map((sym) => (
                         <th key={sym} scope="col">
                           {sym}
                         </th>
                       ))}
-                      <th scope="col">{EPSILON}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -433,15 +431,6 @@ export function AutomatonForm(props: {
                             />
                           </td>
                         ))}
-                        <td>
-                          <input
-                            type="text"
-                            className={styles.cellInput}
-                            value={gridTransitions[`${st}:${EPSILON}`] || ''}
-                            onChange={(e) => handleCellChange(st, EPSILON, e.target.value)}
-                            placeholder="—"
-                          />
-                        </td>
                       </tr>
                     ))}
                   </tbody>

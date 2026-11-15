@@ -342,12 +342,16 @@ $$p \sim q \iff \forall w \in \Sigma^* : (\hat{\delta}(p, w) \in F \iff \hat{\de
 Si alguna cadena los distingue, el par es **distinguible**. El AFD mínimo resulta de fusionar cada clase de estados equivalentes en un solo estado. Para evaluar todos los pares no ordenados se usa una tabla triangular inferior con $\binom{|Q|}{2} = \frac{|Q|(|Q|-1)}{2}$ casillas, con los estados en el orden del autómata. `minimize` sigue el método visto en clase:
 
 1. **Completitud.** La tabla necesita una función de transición total, así que si falta alguna transición se agrega el estado sumidero `error`, con $\delta(\text{error}, a) = \text{error}$ para todo $a \in \Sigma$, y las transiciones faltantes se dirigen a él.
-2. **Marcado inicial.** La diagonal se marca con `X`, y todo par con un estado final y otro no final se marca con `NF`, porque la cadena vacía ya los distingue.
-3. **Pasadas.** Para cada par pendiente $(p, q)$ y cada símbolo $a$ se calcula el par de destinos $(\delta(p, a), \delta(q, a))$. Si cae en la diagonal, se sigue con el siguiente símbolo; si ese par ya está marcado, $(p, q)$ se marca con `nf` y se registra el motivo. Las pasadas se repiten hasta que una completa no marca ningún par nuevo.
-4. **Fusión.** Los pares que nunca se marcaron son equivalentes y se marcan con `F`. Se agrupan con una estructura de conjuntos disjuntos (_union-find_) con compresión de caminos, para que las fusiones sean transitivas: si $B \sim E$ y $E \sim G$, el grupo es $(B,E,G)$.
-5. **AFD mínimo.** Cada grupo es un estado, nombrado con sus miembros en el orden del autómata, como `(B,E)`. El estado inicial es el grupo que contiene a $q_0$, son finales los grupos que contienen algún estado de $F$, y las transiciones se toman de cualquier miembro del grupo.
+2. **Marcado inicial.** La diagonal principal se marca con `≡`, y todo par con un estado terminal y otro no terminal se marca con `X` (distinguibles de orden 0). Los pares de dos estados terminales no se marcan al inicio para permitir fusiones si son equivalentes.
+3. **Pasadas e iteraciones con [m, f, p].** Para cada par pendiente $(p, q)$ y cada símbolo $a$ se calcula el par de destinos $(\delta(p, a), \delta(q, a))$. Se genera una tabla de análisis de cada pasada con las columnas `Par`, `Análisis` y `Resultado`:
+   - Si el par de destinos ya está marcado con `X`, el par se marca: **`m(p,q)`**.
+   - Si para todos los símbolos los destinos son iguales (caen sobre la diagonal `≡`), se fusionan de inmediato: **`f(p,q)`**.
+   - En otro caso queda pendiente para la siguiente iteración: **`p(p,q)`**.
+     Las pasadas se repiten sobre los pares pendientes hasta que una no marque ningún par nuevo (punto fijo).
+4. **Fusión y matriz final.** Los pares equivalentes finales se identifican en la matriz con la marca **`O`**. Se agrupan mediante conjuntos disjuntos (_union-find_) con compresión de caminos, para que las fusiones sean transitivas: si $B \sim E$ y $E \sim G$, el grupo resultante es $(B,E,G)$.
+5. **AFDM (Autómata Mínimo).** Cada grupo resultante es un estado en el AFDM, nombrado con sus miembros en el orden del autómata, como `(B,E)`. El estado inicial es el grupo que contiene a $q_0$, son terminales ($Q_T$) los grupos que contienen algún estado terminal original, y las transiciones se toman del representante del grupo.
 
-**Ejemplo de clase.** El AFD tiene los estados A a F, inicial A y único final D, con estas transiciones:
+**Ejemplo de clase.** El AFD tiene los estados A a F, inicial A y único terminal D ($Q_T = \{D\}$), con estas transiciones:
 
 | Q   | 0   | 1   |
 | --- | --- | --- |
@@ -358,13 +362,13 @@ Si alguna cadena los distingue, el par es **distinguible**. El AFD mínimo resul
 | E   | D   | E   |
 | F   | F   | B   |
 
-1. **Marcado inicial (`NF`):** (A,D), (B,D), (C,D), (D,E) y (D,F), porque D es final y los demás no.
-2. **Pasada 1:** (A,B), (A,E), (B,C), (B,F), (C,E) y (E,F) se marcan porque con `0` llegan a un par que contiene a D y ya está marcado.
-3. **Pasada 2:** (A,C) y (A,F) se marcan porque con `1` llegan a (B,C), marcado en la pasada anterior.
-4. **Pasada 3:** no se marca ningún par nuevo y el proceso termina.
-5. **Pares sin marcar:** (B,E), porque $\delta(B,0) = \delta(E,0) = D$ y $\delta(B,1) = \delta(E,1) = E$; y (C,F), porque $\delta(C,0) = \delta(F,0) = F$ y $\delta(C,1) = \delta(F,1) = B$.
+1. **Marcado inicial (`X`):** (A,D), (B,D), (C,D), (D,E) y (D,F), porque D es terminal y los demás no. Diagonal con `≡`.
+2. **Pasada 1:** Se evalúan los pares pendientes. (A,B), (A,E), (B,C), (B,F), (C,E) y (E,F) se marcan con `m(p,q)` porque con `0` llegan a un par que contiene a D y ya está marcado.
+3. **Pasada 2:** (A,C) y (A,F) se marcan con `m(p,q)` porque con `1` llegan a (B,C), marcado en la pasada anterior.
+4. **Pasada 3:** No se marca ningún par nuevo; los pares pendientes restantes caen sobre la diagonal `≡` y se identifican con `f(B,E)` y `f(C,F)`.
+5. **Pares fusionados (`O` en la matriz final):** (B,E), porque $\delta(B,0) = \delta(E,0) = D$ y $\delta(B,1) = \delta(E,1) = E$; y (C,F), porque $\delta(C,0) = \delta(F,0) = F$ y $\delta(C,1) = \delta(F,1) = B$.
 
-El AFD mínimo tiene cuatro estados, A, (B,E), (C,F) y D, dos menos que el original, y reconoce el mismo lenguaje.
+El AFDM tiene cuatro estados, A, (B,E), (C,F) y D, dos menos que el original, y reconoce el mismo lenguaje.
 
 **Complejidad.** La tabla tiene $\mathcal{O}(|Q|^2)$ pares y cada pasada los revisa con los $|\Sigma|$ símbolos, es decir, $\mathcal{O}(|\Sigma| \cdot |Q|^2)$ operaciones por pasada. Como cada pasada útil distingue pares con cadenas un símbolo más largas, hay a lo sumo $|Q|$ pasadas, de modo que el peor caso es $\mathcal{O}(|\Sigma| \cdot |Q|^3)$ en tiempo y $\mathcal{O}(|Q|^2)$ en espacio para la tabla.
 

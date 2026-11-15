@@ -20,15 +20,23 @@ export function TransitionTable(props: { automaton: Automaton; highlight?: reado
   }
 
   const orderedStates = [...automaton.states];
+  const statesFormatted = orderedStates.join(', ');
+  const finalsFormatted = [...automaton.finals].join(', ');
+  const alphabetFormatted = [...automaton.alphabet].join(', ');
+  const formalDefinition = `AF = { { ${statesFormatted} }, ${automaton.initial}, { ${finalsFormatted} }, { ${alphabetFormatted} }, δ }`;
 
   return (
     <div className={styles.tableWrapper}>
+      <div className={styles.formalDef}>
+        <span className={styles.formalDefLabel}>Definición formal:</span>
+        <code className={styles.formalDefCode}>{formalDefinition}</code>
+      </div>
       <table className={styles.table}>
         <caption className={styles.caption}>Tabla de Transición del Autómata</caption>
         <thead>
           <tr>
             <th scope="col" className={styles.thHeader}>
-              Estado
+              Q
             </th>
             {columns.map((sym) => (
               <th key={sym} scope="col" className={styles.thHeader}>
@@ -73,10 +81,10 @@ export function TransitionTable(props: { automaton: Automaton; highlight?: reado
 
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-          <span className={styles.legendMarker}>→</span> Estado inicial
+          <span className={styles.legendMarker}>→</span> Estado inicial (q0)
         </div>
         <div className={styles.legendItem}>
-          <span className={styles.legendMarker}>*</span> Estado final / aceptación
+          <span className={styles.legendMarker}>*</span> Estado terminal (QT)
         </div>
         <div className={styles.legendItem}>
           <span className={styles.legendMarker}>—</span> Sin transición definida

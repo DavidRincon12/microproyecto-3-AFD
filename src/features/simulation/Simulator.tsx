@@ -37,7 +37,7 @@ export function Simulator(props: { automaton: Automaton }) {
 
   return (
     <section className={styles.simulatorContainer} aria-label="Simulador de cadenas">
-      <h2 className={styles.title}>Simulador de Cadenas en el AFD Mínimo</h2>
+      <h2 className={styles.title}>Simulador de Cadenas en el AFDM</h2>
 
       <form className={styles.form} onSubmit={handleSimulate}>
         <label htmlFor="chain-input" style={{ fontWeight: 600, fontSize: '0.9rem' }}>
