@@ -1,9 +1,10 @@
 .tableWrapper {
   overflow-x: auto;
   margin: 1rem 0;
-  border: 1px solid var(--color-border, #e2e8f0);
-  border-radius: 0.5rem;
-  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio, 0.5rem);
+  background: var(--color-superficie);
+  color: var(--color-texto);
 }
 
 .formalDef {
@@ -12,21 +13,22 @@
   gap: 0.5rem;
   flex-wrap: wrap;
   padding: 0.5rem 1rem;
-  background: var(--color-surface-subtle, #f8fafc);
-  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
   font-size: 0.875rem;
+  color: var(--color-texto);
 }
 
 .formalDefLabel {
   font-weight: 600;
-  color: var(--color-text-muted, #475569);
+  color: var(--color-texto-suave);
 }
 
 .formalDefCode {
-  font-family: var(--font-mono, monospace);
+  font-family: var(--fuente-mono, monospace);
   font-weight: 700;
-  color: var(--color-primary, #0284c7);
-  background: #f1f5f9;
+  color: var(--color-acento);
+  background: var(--color-acento-suave);
   padding: 0.2rem 0.5rem;
   border-radius: 0.25rem;
 }
@@ -36,6 +38,8 @@
   border-collapse: collapse;
   text-align: center;
   font-size: 0.95rem;
+  background: var(--color-superficie);
+  color: var(--color-texto);
 }
 
 .caption {
@@ -43,45 +47,47 @@
   font-weight: 700;
   font-size: 1rem;
   text-align: left;
-  background: var(--color-surface-subtle, #f8fafc);
-  border-bottom: 1px solid var(--color-border, #e2e8f0);
-  color: var(--color-text, #1e293b);
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+  color: var(--color-texto);
 }
 
 .table th,
 .table td {
   padding: 0.6rem 1rem;
-  border: 1px solid var(--color-border, #e2e8f0);
+  border: 1px solid var(--color-borde);
+  color: var(--color-texto);
 }
 
 .thHeader {
-  background: var(--color-surface-subtle, #f1f5f9);
+  background: var(--color-acento-suave);
   font-weight: 700;
-  color: var(--color-text, #334155);
+  color: var(--color-texto);
 }
 
 .stateRowHeader {
   text-align: left;
   font-weight: 600;
-  background: var(--color-surface-subtle, #f8fafc);
-  font-family: monospace;
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font-family: var(--fuente-mono, monospace);
   white-space: nowrap;
 }
 
 .highlightRow {
-  background-color: #e0f2fe !important;
+  background-color: var(--color-acento-suave) !important;
   font-weight: 700;
 }
 
 .indicator {
   font-weight: 800;
-  color: var(--color-primary, #0284c7);
+  color: var(--color-acento);
   display: inline-block;
   width: 1.5rem;
 }
 
 .emptyCell {
-  color: var(--color-text-muted, #94a3b8);
+  color: var(--color-texto-suave);
 }
 
 .legend {
@@ -89,9 +95,9 @@
   gap: 1.5rem;
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
-  color: var(--color-text-muted, #64748b);
-  border-top: 1px solid var(--color-border, #e2e8f0);
-  background: var(--color-surface-subtle, #f8fafc);
+  color: var(--color-texto-suave);
+  border-top: 1px solid var(--color-borde);
+  background: var(--color-superficie);
 }
 
 .legendItem {
@@ -102,5 +108,5 @@
 
 .legendMarker {
   font-weight: bold;
-  color: var(--color-primary, #0284c7);
+  color: var(--color-acento);
 }
