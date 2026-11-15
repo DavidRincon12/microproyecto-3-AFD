@@ -10,7 +10,7 @@
 
 ## Contenido
 
-1. Cómo abrir la aplicación
+1. Instalación y ejecución
 2. Modalidad A: a partir de un lenguaje
 3. Modalidad B: a partir de un autómata
 4. Cómo leer los resultados
@@ -18,9 +18,47 @@
 
 ---
 
-## 1. Cómo abrir la aplicación
+## 1. Instalación y ejecución
 
-La aplicación corre en el navegador. Con Node.js 22 instalado, se descarga el proyecto, se instalan las dependencias con `npm install` y se inicia con `npm run dev`; después se abre `http://localhost:5173`. El archivo `README.md` del proyecto detalla estos pasos.
+### 1.1 Qué es la aplicación
+
+A partir de un alfabeto y una expresión regular (Modalidad A), o de un autómata finito ingresado a mano (Modalidad B), la aplicación identifica si el autómata es determinista, lo convierte en AFD cuando hace falta, elimina los estados inaccesibles y lo minimiza. Cada etapa se explica paso a paso con la notación vista en clase, y el resultado final es la tabla y el diagrama de transición del AFD mínimo, junto con un simulador de cadenas. La aplicación corre completa en el navegador, sin servidor ni base de datos.
+
+### 1.2 Requisitos
+
+- Node.js 22 LTS, que incluye npm 10.
+- Git, para descargar el proyecto.
+- Un navegador actualizado (Chrome, Edge, Firefox o Safari).
+
+### 1.3 Instalar y abrir
+
+Se descarga el proyecto, se instalan sus dependencias y se inicia la aplicación con estos comandos:
+
+```bash
+git clone https://github.com/DavidRincon12/microproyecto-3-AFD.git
+cd microproyecto-3-AFD
+npm install
+npm run dev
+```
+
+Después se abre `http://localhost:5173` en el navegador. Para detener la aplicación se presiona `Ctrl + C` en la terminal.
+
+### 1.4 Versión de producción
+
+La versión de producción carga más rápido, porque el diagrama no tiene que compilarse en el momento. Se genera con `npm run build` y se abre con `npm run preview`, que la sirve en `http://localhost:4173`.
+
+### 1.5 Comprobar que todo funciona
+
+| Comando             | Qué hace                                        |
+| ------------------- | ----------------------------------------------- |
+| `npm test`          | Corre todas las pruebas automáticas             |
+| `npm run lint`      | Revisa estilo, formato y reglas de arquitectura |
+| `npm run typecheck` | Revisa los tipos de TypeScript                  |
+| `npm run build`     | Genera la versión de producción en `dist/`      |
+
+Si `npm test` termina con todas las pruebas en verde, la instalación quedó bien.
+
+### 1.6 La pantalla principal
 
 En la parte superior hay dos pestañas, una por modalidad: **«Modalidad A: lenguaje»**, que aparece al iniciar, y **«Modalidad B: autómata»**. En ambas, al procesar la entrada aparecen cinco pestañas de etapas (sección 4) y, al final de la página, el simulador de cadenas (sección 5).
 
