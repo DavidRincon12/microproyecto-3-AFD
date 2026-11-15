@@ -48,13 +48,13 @@ En la **Modalidad A** se escribe el alfabeto separado por comas (`a,b`) y una ex
 ## Documentación
 
 - Análisis: `docs/analisis/alcance-y-casos-de-uso.md` y `docs/ejemplos/ejemplos-resueltos.md`.
-- Documento técnico: `docs/tecnico/`, que empieza por `arquitectura.md` y `estructuras-de-datos.md`.
+- Documento técnico: `docs/documento-tecnico.md`.
 - Manuales: `docs/manual/modalidad-a.md` y `docs/manual/modalidad-b.md`.
 - Matriz de pruebas: `docs/pruebas/modalidad-a.md` y `docs/pruebas/modalidad-b.md`, con capturas en `docs/pruebas/evidencias/`.
 
 ## Bibliotecas
 
-La interfaz usa React y se construye con Vite. Los diagramas los dibuja Graphviz, compilado a WebAssembly mediante `@viz-js/viz`, a partir del texto DOT que genera el propio código; la biblioteca solo dibuja y no participa en la construcción, la determinización ni la minimización (`docs/tecnico/bibliotecas-graficas.md`).
+La interfaz usa React y se construye con Vite. Los diagramas los dibuja Graphviz, compilado a WebAssembly mediante `@viz-js/viz`, a partir del texto DOT que genera el propio código; la biblioteca solo dibuja y no participa en la construcción, la determinización ni la minimización (`docs/documento-tecnico.md`, sección 5).
 
 ## Autores
 
