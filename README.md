@@ -43,7 +43,7 @@ En la **Modalidad A** se escribe el alfabeto separado por comas (`a,b`) y una ex
 | `src/core/__fixtures__/` | Ejemplos de clase resueltos a mano, usados como pruebas y como ejemplos de la interfaz |
 | `src/features/`          | Componentes de la interfaz, uno por funcionalidad                                      |
 | `src/app/`               | Página principal y estilos globales                                                    |
-| `docs/`                  | Análisis, documento técnico, manuales, matriz de pruebas y guion de sustentación       |
+| `docs/`                  | Análisis, documento técnico, manuales y matriz de pruebas                              |
 
 ## Documentación
 
@@ -51,7 +51,6 @@ En la **Modalidad A** se escribe el alfabeto separado por comas (`a,b`) y una ex
 - Documento técnico: `docs/tecnico/`, que empieza por `arquitectura.md` y `estructuras-de-datos.md`.
 - Manuales: `docs/manual/modalidad-a.md` y `docs/manual/modalidad-b.md`.
 - Matriz de pruebas: `docs/pruebas/modalidad-a.md` y `docs/pruebas/modalidad-b.md`, con capturas en `docs/pruebas/evidencias/`.
-- Sustentación: `docs/sustentacion.md`.
 
 ## Bibliotecas
 
