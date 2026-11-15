@@ -33,24 +33,24 @@ El CI de GitHub Actions ejecuta los cuatro comandos en cada pull request.
 
 ## Uso rápido
 
-En la **Modalidad A** se escribe el alfabeto separado por comas (`a,b`) y una expresión regular (`(a|b)*abb`), o se carga uno de los ejemplos, y se pulsa «Construir». En la **Modalidad B** se registran los estados, el alfabeto, el estado inicial, los finales y la tabla de transiciones, y se pulsa «Procesar Autómata». En ambos casos aparecen cinco pestañas, una por etapa, con su tabla, su diagrama y sus pasos, y debajo el simulador de cadenas sobre el AFD mínimo. Los manuales de `docs/manual/` explican cada modalidad con ejemplos.
+En la **Modalidad A** se escribe el alfabeto separado por comas (`a,b`) y una expresión regular (`(a|b)*abb`), o se carga uno de los ejemplos, y se pulsa «Construir». En la **Modalidad B** se registran los estados, el alfabeto, el estado inicial, los finales y la tabla de transiciones, y se pulsa «Procesar Autómata». En ambos casos aparecen cinco pestañas, una por etapa, con su tabla, su diagrama y sus pasos, y debajo el simulador de cadenas sobre el AFD mínimo. El manual de usuario (`docs/manual-de-usuario.md`) explica cada modalidad con ejemplos.
 
 ## Estructura del proyecto
 
-| Carpeta                  | Contenido                                                                              |
-| ------------------------ | -------------------------------------------------------------------------------------- |
-| `src/core/`              | Lógica pura de los autómatas: modelo, algoritmos y explicación de cada etapa           |
-| `src/core/__fixtures__/` | Ejemplos de clase resueltos a mano, usados como pruebas y como ejemplos de la interfaz |
-| `src/features/`          | Componentes de la interfaz, uno por funcionalidad                                      |
-| `src/app/`               | Página principal y estilos globales                                                    |
-| `docs/`                  | Análisis, documento técnico, manuales y matriz de pruebas                              |
+| Carpeta                  | Contenido                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------- |
+| `src/core/`              | Lógica pura de los autómatas: modelo, algoritmos y explicación de cada etapa                |
+| `src/core/__fixtures__/` | Ejemplos de clase resueltos a mano, usados como pruebas y como ejemplos de la interfaz      |
+| `src/features/`          | Componentes de la interfaz, uno por funcionalidad                                           |
+| `src/app/`               | Página principal y estilos globales                                                         |
+| `docs/`                  | Documento técnico, manual de usuario, matriz de pruebas con evidencias y ejemplos resueltos |
 
 ## Documentación
 
-- Análisis: `docs/analisis/alcance-y-casos-de-uso.md` y `docs/ejemplos/ejemplos-resueltos.md`.
+- Ejemplos de clase resueltos a mano: `docs/ejemplos/ejemplos-resueltos.md`.
 - Documento técnico: `docs/documento-tecnico.md`.
-- Manuales: `docs/manual/modalidad-a.md` y `docs/manual/modalidad-b.md`.
-- Matriz de pruebas: `docs/pruebas/modalidad-a.md` y `docs/pruebas/modalidad-b.md`, con capturas en `docs/pruebas/evidencias/`.
+- Manual de usuario: `docs/manual-de-usuario.md`.
+- Matriz de pruebas: `docs/matriz-de-pruebas.md`, con capturas en `docs/evidencias/`.
 
 ## Bibliotecas
 
