@@ -1,10 +1,12 @@
 import { ValidationError } from './errors';
 
 export const EPSILON = 'ε';
+export const LAMBDA = 'λ';
 export const ERROR_STATE = 'error';
 /** Caracteres que usa la sintaxis de las expresiones o del formulario. */
 export const RESERVED_SYMBOLS: ReadonlySet<string> = new Set([
   EPSILON,
+  LAMBDA,
   '|',
   '*',
   '+',

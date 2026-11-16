@@ -104,7 +104,7 @@ Los operadores `*`, `+` y `?` se aplican primero, después la concatenación y a
 
 ### 2.4 Ejemplo completo: `(0|1)*011`
 
-Con el alfabeto numérico `0,1` y la expresión `(0|1)*011` (o equivalentemente `(a|b)*abb`), la construcción genera un AFND-ε de 14 estados con letras mayúsculas de la `A` a la `N` (inicial `G`, final `N`), siguiendo la convención de los apuntes de clase. La clasificación lo identifica como no determinista por sus transiciones ε, la conversión produce un AFD de 5 estados (con nombres compuestos por las letras agrupadas), ninguno es inaccesible y la minimización fusiona dos de ellos mediante la matriz triangular, de modo que el AFD mínimo (AFDM) tiene 4 estados. El simulador acepta `011` y `0011` y rechaza `01` y la cadena vacía.
+Con el alfabeto numérico `0,1` y la expresión `(0|1)*011` (o equivalentemente `(a|b)*abb`), la construcción por el método de posiciones genera un AFND de 6 estados sin transiciones vacías con letras mayúsculas de la `A` a la `F` (inicial `A`, final `F`), siguiendo exactamente la convención de los apuntes de clase. La clasificación lo identifica como no determinista por tener múltiples destinos con el mismo símbolo (por ejemplo `A` va con `0` a `B` y a `D`), la conversión produce un AFD de 5 estados (con nombres compuestos como `BD`, `CE`, `CF`), ninguno es inaccesible y la minimización fusiona dos de ellos mediante la matriz triangular, de modo que el AFD mínimo (AFDM) tiene 4 estados (`AC`, `BD`, `CE`, `CF`). El simulador acepta `011` y `0011` y rechaza `01` y la cadena vacía.
 
 ### 2.5 Errores comunes
 

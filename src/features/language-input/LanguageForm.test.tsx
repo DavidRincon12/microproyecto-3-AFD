@@ -43,13 +43,13 @@ describe('LanguageForm', () => {
     expect(screen.getByText('c', { selector: 'mark' })).toBeInTheDocument();
   });
 
-  it('inserta ε donde está el cursor', async () => {
+  it('inserta λ donde está el cursor', async () => {
     render(<LanguageForm onSubmit={vi.fn()} />);
     const regex = screen.getByLabelText<HTMLInputElement>('Expresión regular');
     await userEvent.type(regex, 'ab');
     regex.setSelectionRange(1, 1);
-    await userEvent.click(screen.getByRole('button', { name: 'Insertar ε' }));
-    expect(regex).toHaveValue('aεb');
+    await userEvent.click(screen.getByRole('button', { name: 'Insertar λ' }));
+    expect(regex).toHaveValue('aλb');
   });
 
   it('carga un ejemplo en ambos campos', async () => {

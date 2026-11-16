@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent, type ReactNode, type Ref } from 'react';
-import { EPSILON, type InputField, type ValidationError } from '../../core/model';
+import { LAMBDA, type InputField, type ValidationError } from '../../core/model';
 import styles from './LanguageForm.module.css';
 
 interface Example {
@@ -20,9 +20,9 @@ const EXAMPLES = Object.values(
   if (!aIsNumeric && bIsNumeric) return 1;
   return a.description.localeCompare(b.description);
 });
-const OPERATORS = [EPSILON, '|', '*', '+', '?', '(', ')'];
+const OPERATORS = [LAMBDA, '|', '*', '+', '?', '(', ')'];
 const REGEX_HELP =
-  'Unión |, concatenación sin operador, * cero o más, + una o más, ? opcional, ( ) agrupación y ε cadena vacía. Los operadores *, + y ? se aplican antes que la concatenación, y esta antes que |.';
+  'Unión |, concatenación sin operador, * cero o más, + una o más, ? opcional, ( ) agrupación y λ cadena vacía. Los operadores *, + y ? se aplican antes que la concatenación, y esta antes que |.';
 
 /** El texto con el carácter de la posición indicada (desde 1) señalado. */
 function Marked(props: { text: string; position?: number }) {

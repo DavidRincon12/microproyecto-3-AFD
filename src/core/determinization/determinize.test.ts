@@ -174,7 +174,14 @@ describe('determinize: explicación', () => {
   });
 
   it('empieza por la clausura-ε del inicial cuando hay transiciones ε', () => {
-    const stage = determinize(fromRegex('ab', ['a', 'b']));
+    const nfaConEpsilon = fromJson({
+      states: ['A', 'B'],
+      alphabet: ['a'],
+      initial: 'A',
+      finals: ['B'],
+      transitions: [['A', 'ε', 'B']],
+    });
+    const stage = determinize(nfaConEpsilon);
     expect(stage.steps[0].title).toBe('Clausura-ε de {A}');
     expect(stage.steps[1].table?.headers).toContain('Clausura-ε');
   });

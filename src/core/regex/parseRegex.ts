@@ -1,4 +1,4 @@
-import { EPSILON, ValidationError, type Sym } from '../model';
+import { EPSILON, LAMBDA, ValidationError, type Sym } from '../model';
 import type { RegexNode } from './ast';
 
 interface Token {
@@ -100,7 +100,7 @@ export function parseRegex(text: string, alphabet: ReadonlySet<Sym>): RegexNode 
       );
     }
     index++;
-    if (char === EPSILON) return { kind: 'epsilon' };
+    if (char === EPSILON || char === LAMBDA) return { kind: 'epsilon' };
     if (alphabet.has(char)) return { kind: 'symbol', value: char };
     return fail(
       `"${char}" (posición ${position}) no pertenece al alfabeto {${[...alphabet].join(', ')}}.`,

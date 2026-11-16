@@ -7,27 +7,35 @@ import { thompson } from './index';
 const build = (regex: string, alphabet = ['a', 'b']) =>
   thompson(parseRegex(regex, new Set(alphabet)), new Set(alphabet));
 
-describe('thompson: estructura', () => {
+describe('construcción de autómata (posiciones sin transiciones vacías): estructura', () => {
   it.each([
     ['a', 2, 1],
-    ['ab', 4, 3],
-    ['a|b', 6, 6],
-    ['a*', 4, 5],
-    ['ε', 2, 1],
+    ['ab', 3, 2],
+    ['a|b', 3, 2],
+    ['a*', 2, 2],
+    ['ε', 1, 0],
   ])('%j produce %i estados y %i transiciones', (regex, states, transitions) => {
     const json = toJson(build(regex).automaton);
     expect(json.states).toHaveLength(states);
     expect(json.transitions).toHaveLength(transitions);
   });
 
-  it('nombra los estados con letras mayúsculas en el orden en que se crean', () => {
+  it('nombra los estados con letras mayúsculas iniciando en A', () => {
     const json = toJson(build('a|b').automaton);
-    expect(json.states).toEqual(['A', 'B', 'C', 'D', 'E', 'F']);
-    expect(json.initial).toBe('E');
-    expect(json.finals).toEqual(['F']);
+    expect(json.states).toEqual(['A', 'B', 'C']);
+    expect(json.initial).toBe('A');
+    expect(json.finals).toEqual(['B', 'C']);
   });
 
-  it('produce un solo estado final', () => {
+  it('no contiene ninguna transición vacía (sin ε ni λ)', () => {
+    const json = toJson(build('(a|b)*abb').automaton);
+    for (const [, sym] of json.transitions) {
+      expect(sym).not.toBe('ε');
+      expect(sym).not.toBe('λ');
+    }
+  });
+
+  it('produce un solo estado final para (a|b)*abb', () => {
     expect(build('(a|b)*abb').automaton.finals.size).toBe(1);
   });
 
@@ -36,7 +44,7 @@ describe('thompson: estructura', () => {
   });
 });
 
-describe('thompson: lenguaje', () => {
+describe('construcción de autómata: lenguaje', () => {
   it.each([
     ['(a|b)*abb', ['abb', 'aabb', 'babb'], ['', 'ab', 'abba']],
     ['ε', [''], ['a']],
@@ -50,22 +58,21 @@ describe('thompson: lenguaje', () => {
   });
 });
 
-describe('thompson: explicación', () => {
-  it('genera la etapa de construcción con un paso por nodo de la expresión', () => {
+describe('construcción de autómata: explicación', () => {
+  it('genera la etapa de construcción con los pasos del método de posiciones', () => {
     const stage = build('a|b');
     expect(stage.stage).toBe('construction');
-    expect(stage.title).toBe('Construcción del AFND-ε (Thompson)');
-    expect(stage.steps).toHaveLength(3);
+    expect(stage.title).toBe('Construcción del AFND (Autómata de Posiciones)');
+    expect(stage.steps.length).toBeGreaterThanOrEqual(3);
   });
 
-  it('explica la unión con los estados que crea', () => {
-    const union = build('a|b').steps[2];
-    expect(union.title).toBe('Unión de a y b');
-    expect(union.detail).toContain('E');
-    expect(union.detail).toContain('F');
+  it('explica las posiciones y los estados asignados', () => {
+    const step = build('a|b').steps[0];
+    expect(step.title).toContain('posiciones');
+    expect(step.table?.headers).toContain('Estado asignado');
   });
 
-  it('resume el autómata construido', () => {
-    expect(build('a').summary).toBe('AFND-ε con 2 estados: inicial A y final B.');
+  it('resume el autómata construido sin transiciones vacías', () => {
+    expect(build('a').summary).toContain('sin transiciones vacías');
   });
 });

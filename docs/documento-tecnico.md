@@ -242,23 +242,23 @@ Cada error de sintaxis se informa con su posición:
 | `a\|`                | Falta una expresión después de "\|" (posición 2).                               |
 | `abc` con Σ = {a, b} | "c" (posición 3) no pertenece al alfabeto {a, b}.                               |
 
-### 4.3 Construcción de Thompson (RF-03)
+### 4.3 Construcción del AFND mediante Autómata de Posiciones (RF-03)
 
-`thompson` recorre el árbol en postorden y construye un fragmento de AFND-ε por nodo, siempre con un solo estado inicial y un solo estado final. Los estados se nombran con letras mayúsculas (`A`, `B`, `C`… y `A1`, `B1`… si superan 26) en el orden en que se crean, alineados con la convención del cuaderno de clase y usando símbolos numéricos (`0, 1`) para las transiciones.
+Siguiendo la convención de clase donde un autómata finito no tiene transiciones vacías (las transiciones solo ocurren por medio de símbolos reales del alfabeto y las ausentes quedan indefinidas para dirigirse al estado de error), la aplicación implementa el **Autómata de Posiciones** (Glushkov / Berry-Sethi). Este método construye un AFND directo sin transiciones ε ni λ:
 
-| Nodo               | Fragmento                                                                             |
-| ------------------ | ------------------------------------------------------------------------------------- |
-| símbolo `a`        | nuevo $i$ —a→ nuevo $f$                                                               |
-| `ε`                | nuevo $i$ —ε→ nuevo $f$                                                               |
-| concatenación $st$ | final de $s$ —ε→ inicial de $t$                                                       |
-| unión $s\|t$       | nuevo $i$ —ε→ iniciales de $s$ y de $t$; finales de $s$ y de $t$ —ε→ nuevo $f$        |
-| $s^*$              | nuevo $i$ —ε→ inicial de $s$ y nuevo $f$; final de $s$ —ε→ inicial de $s$ y nuevo $f$ |
-| $s^+$              | igual que $s^*$, sin la transición de $i$ a $f$                                       |
-| $s?$               | nuevo $i$ —ε→ inicial de $s$ y nuevo $f$; final de $s$ —ε→ nuevo $f$                  |
+1. Cada aparición de un símbolo en la expresión regular recibe una posición numerada ($1, \dots, n$) de izquierda a derecha. El estado inicial es `A` y las posiciones corresponden a los estados `B`, `C`, `D`…
+2. Se analizan de forma recursiva sobre el árbol sintáctico las funciones de posición:
+   - **anidable (`nullable`)**: indica si la subexpresión puede reconocer la palabra vacía.
+   - **primeras posiciones (`firstpos`)**: conjunto de posiciones que pueden coincidir con el primer símbolo de una cadena.
+   - **últimas posiciones (`lastpos`)**: conjunto de posiciones que pueden coincidir con el último símbolo de una cadena.
+   - **posiciones siguientes (`followpos`)**: para cada posición, el conjunto de posiciones que pueden sucederle inmediatamente.
+3. Se construyen las transiciones estrictamente con símbolos de entrada:
+   - Desde el estado inicial `A` se transita con el símbolo correspondiente hacia cada posición en `firstpos(raíz)`.
+   - Desde cada estado-posición se transita hacia cada posición de su `followpos(p)` con el símbolo de destino.
+   - **No se generan transiciones vacías**. Si para un símbolo no hay destino, la celda queda vacía (`—`), igual que en el cuaderno de clase.
+4. Son estados terminales aquellos en `lastpos(raíz)`, y además `A` si la expresión acepta la palabra vacía (`nullable(raíz)`).
 
-La concatenación une los fragmentos con una transición ε en lugar de fusionar estados, porque así cada paso de la explicación muestra un fragmento completo y fácil de reconocer.
-
-Con el alfabeto numérico `0,1` y la expresión `(0|1)*011` (o sobre `a,b` con `(a|b)*abb`), la construcción genera 14 estados en diez pasos, uno por nodo del árbol: los fragmentos iniciales con letras mayúsculas (`A`, `B`, `C`...), las uniones y estrellas con sus nuevos estados iniciales y finales, y las concatenaciones correspondientes. El AFND-ε resultante tiene estados de `A` a `N`, inicial `G` y único final `N`; la conversión a AFD lo reduce a 5 estados (con nombres compuestos como `ACE`, `BD`) y la minimización a 4.
+Con el alfabeto numérico `0,1` y la expresión `(0|1)*011` (o sobre `a,b` con `(a|b)*abb`), el autómata resultante tiene 6 estados (`A` a `F`), inicial `A`, terminal `F`, y transiciones no deterministas directas (por ejemplo `A` va con `0` a `B` y a `D`). La conversión a AFD lo reduce a 5 estados (con nombres compuestos como `BD`, `CE`, `CF`) y la minimización a 4 estados mínimos (`AC`, `BD`, `CE`, `CF`).
 
 ### 4.4 Clasificación AFD o AFND (RF-05)
 
@@ -432,7 +432,7 @@ Cada algoritmo genera su propia explicación como una lista de pasos (sección 3
 
 ## 7. Validación
 
-El proyecto tiene 240 pruebas automáticas con Vitest, que se ejecutan con `npm test` y en el CI de cada pull request junto con el lint, la revisión de tipos y el build. Las pruebas unitarias cubren cada algoritmo con sus casos borde, y las de interfaz usan Testing Library. Además, `src/core/pipeline/fixtures.test.ts` pasa todos los ejemplos de clase resueltos a mano (`src/core/__fixtures__/`) por el proceso completo y el simulador, y comprueba su clasificación, el tamaño del AFD mínimo y las cadenas que deben aceptarse y rechazarse.
+El proyecto tiene 242 pruebas automáticas con Vitest, que se ejecutan con `npm test` y en el CI de cada pull request junto con el lint, la revisión de tipos y el build. Las pruebas unitarias cubren cada algoritmo con sus casos borde, y las de interfaz usan Testing Library. Además, `src/core/pipeline/fixtures.test.ts` pasa todos los ejemplos de clase resueltos a mano (`src/core/__fixtures__/`) por el proceso completo y el simulador, y comprueba su clasificación, el tamaño del AFD mínimo y las cadenas que deben aceptarse y rechazarse.
 
 La validación funcional está en la matriz de pruebas (`docs/matriz-de-pruebas.md`), con 31 casos de las dos modalidades y capturas de la aplicación como evidencia en `docs/evidencias/`.
 

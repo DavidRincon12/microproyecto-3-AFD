@@ -1,6 +1,7 @@
 export {
   EPSILON,
   ERROR_STATE,
+  LAMBDA,
   RESERVED_SYMBOLS,
   fromJson,
   repeatedSymbolMessage,

@@ -95,4 +95,13 @@ describe('parseRegex: límites', () => {
       'La expresión tiene 201 caracteres y el máximo es 200. Simplifícala.',
     );
   });
+
+  it('interpreta λ como cadena vacía igual que ε', () => {
+    expect(parseRegex('λ', ab)).toEqual({ kind: 'epsilon' });
+    expect(parseRegex('a|λ', ab)).toEqual({
+      kind: 'union',
+      left: { kind: 'symbol', value: 'a' },
+      right: { kind: 'epsilon' },
+    });
+  });
 });
