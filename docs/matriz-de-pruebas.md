@@ -10,7 +10,7 @@
 
 ## 1. Cómo se ejecutaron las pruebas
 
-Cada caso se verificó de dos maneras. Primero, con las pruebas automáticas de Vitest (`npm test`), que cubren el núcleo y la interfaz: 229 pruebas en verde, entre ellas `src/core/pipeline/fixtures.test.ts`, que pasa todos los ejemplos de clase resueltos a mano por el proceso completo y el simulador. Después, en la versión de producción de la aplicación (`npm run build` y `npm run preview`), donde se ingresó cada entrada y se guardó una captura de pantalla en `docs/evidencias/`. Los resultados obtenidos son los que mostró la aplicación.
+Cada caso se verificó de dos maneras. Primero, con las pruebas automáticas de Vitest (`npm test`), que cubren el núcleo y la interfaz: 267 pruebas en verde, entre ellas `src/core/pipeline/fixtures.test.ts`, que pasa todos los ejemplos de clase resueltos a mano por el proceso completo y el simulador. Después, en la versión de producción de la aplicación (`npm run build` y `npm run preview`), donde se ingresó cada entrada y se guardó una captura de pantalla en `docs/evidencias/`. Los resultados obtenidos son los que mostró la aplicación.
 
 ---
 

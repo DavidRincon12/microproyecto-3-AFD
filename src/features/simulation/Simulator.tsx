@@ -56,7 +56,7 @@ export function Simulator(props: { automaton: Automaton }) {
             Simular
           </button>
         </div>
-        <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted, #64748b)' }}>
+        <span style={{ fontSize: '0.8rem', color: 'var(--color-texto-suave)' }}>
           Alfabeto permitido: {'{'}
           {[...automaton.alphabet].sort().join(', ')}
           {'}'}. Para evaluar la cadena vacía, deja el campo en blanco.

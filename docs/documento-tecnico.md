@@ -98,7 +98,7 @@ Las reglas se comprueban con dependency-cruiser en `npm run lint` y en el CI, de
 
 `runPipeline` produce siempre cinco etapas, y cada una entrega su autómata, un resumen y la lista de pasos que la interfaz muestra en una pestaña:
 
-1. En la Modalidad A, la **construcción** valida el alfabeto y la expresión y arma el AFND-ε de Thompson; en la Modalidad B, la etapa de **entrada** muestra el autómata registrado.
+1. En la Modalidad A, la **construcción** valida el alfabeto y la expresión y arma el AFND directo sin transiciones vacías mediante el método de posiciones (Glushkov / Berry-Sethi); en la Modalidad B, la etapa de **entrada** muestra el autómata registrado.
 2. La **clasificación** decide si el autómata es determinista y explica cada motivo.
 3. La **conversión AFND → AFD** aplica la construcción por subconjuntos. Si el autómata ya es determinista, la etapa lo indica y no lo modifica, como pide el enunciado.
 4. La **eliminación de inaccesibles** recorre el autómata desde el estado inicial y quita lo que no se alcanza.
@@ -162,7 +162,7 @@ Cada transición es `[origen, símbolo, destino]`. Un AFND repite el mismo orige
 
 ### 3.3 Alfabeto
 
-Cada símbolo es exactamente un carácter, contado por punto de código para que `ñ` o `á` valgan por uno. Los nueve caracteres que usa la sintaxis de las expresiones o del formulario quedan reservados y no pueden pertenecer al alfabeto: `ε`, `|`, `*`, `+`, `?`, `(`, `)`, `,` y el espacio. La regla vive en el modelo, así que la aplican igual `fromJson` y el validador de la Modalidad A.
+Cada símbolo es exactamente un carácter, contado por punto de código para que `ñ` o `á` valgan por uno. Los nueve caracteres que usa la sintaxis de las expresiones o del formulario quedan reservados y no pueden pertenecer al alfabeto: `λ`, `|`, `*`, `+`, `?`, `(`, `)`, `,` y el espacio. La regla vive en el modelo, así que la aplican igual `fromJson` y el validador de la Modalidad A.
 
 ### 3.4 Nombres de los estados nuevos
 
@@ -170,7 +170,7 @@ El lineamiento técnico pide nombres consistentes que conserven su correspondenc
 
 | Situación                                 | Regla                                                                 | Ejemplo                   |
 | ----------------------------------------- | --------------------------------------------------------------------- | ------------------------- |
-| Construcción de Thompson                  | Letras mayúsculas consecutivas (A, B, C... y A1, B1... al superar 26) | `A`, `B`, `C`             |
+| Construcción del AFND                     | Letras mayúsculas consecutivas (A, B, C... y A1, B1... al superar 26) | `A`, `B`, `C`             |
 | Subconjunto en la determinización         | concatenación en el orden del autómata original                       | `{B, D}` → `BD`           |
 | Subconjunto vacío                         | estado sumidero                                                       | `error`                   |
 | La concatenación coincide con otro estado | llaves y comas                                                        | `{A,B}` si ya existe `AB` |

@@ -68,13 +68,13 @@ En la parte superior hay dos pestañas, una por modalidad: **«Modalidad A: leng
 
 ### 2.1 Qué hace
 
-La Modalidad A construye el AFD mínimo de un lenguaje regular descrito con un alfabeto y una expresión regular. La aplicación arma primero un AFND-ε con la construcción de Thompson, lo clasifica, lo convierte en AFD, elimina los estados inaccesibles y lo minimiza, y explica cada etapa paso a paso.
+La Modalidad A construye el AFD mínimo de un lenguaje regular descrito con un alfabeto y una expresión regular. La aplicación construye primero un AFND directo mediante el **método de autómatas de posición (Glushkov / Berry-Sethi)** sin transiciones vacías (acorde con el método y ejercicios del cuaderno de clase), lo clasifica, lo convierte en AFD, elimina los estados inaccesibles y lo minimiza mediante la matriz triangular, explicando cada etapa paso a paso.
 
 ### 2.2 Cómo usarla
 
 1. Elige la pestaña **«Modalidad A: lenguaje»**.
-2. Escribe el **alfabeto**: símbolos de un solo carácter separados por comas, por ejemplo `a,b` o `0,1,2`.
-3. Escribe la **expresión regular** con la sintaxis de la sección 2.3. Los botones bajo el campo insertan `ε` y los operadores donde está el cursor, lo que sirve porque `ε` no está en el teclado.
+2. Escribe el **alfabeto**: símbolos de un solo carácter separados por comas, por ejemplo `0,1` o `0,1,2`.
+3. Escribe la **expresión regular** con la sintaxis de la sección 2.3. Los botones bajo el campo insertan `λ` y los operadores donde está el cursor, lo que sirve porque `λ` no está en el teclado.
 4. Pulsa **«Construir»**.
 
 En lugar de los pasos 2 y 3 puedes elegir un ejemplo en **«Cargar ejemplo»**, que llena ambos campos.
@@ -103,6 +103,29 @@ Los operadores `*`, `+` y `?` se aplican primero, después la concatenación y a
 | Cadenas que terminan en `abb`                                     | `a,b`    | `(a\|b)*abb` |
 | Palabras que inician y terminan en `a`, con `e` o `i` en medio    | `a,e,i`  | `a(e\|i)*a`  |
 
+### 2.3.1 Guía práctica: cómo escribir patrones comunes de lenguajes
+
+Para facilitar la escritura de lenguajes regulares en la aplicación, la siguiente tabla reúne los patrones más frecuentes utilizados en clase:
+
+| Requerimiento del lenguaje                          | Expresión sobre {0, 1}           | Explicación                                                                   |
+| :-------------------------------------------------- | :------------------------------- | :---------------------------------------------------------------------------- |
+| **Termina en una secuencia específica** (ej. `011`) | `(0\|1)*011`                     | Prefijo libre de ceros y unos `(0\|1)*`, terminado obligatoriamente en `011`. |
+| **Comienza con un símbolo específico** (ej. `0`)    | `0(0\|1)*`                       | Inicia obligatoriamente en `0`, seguido de cualquier combinación libre.       |
+| **Contiene una subcadena fija** (ej. `101`)         | `(0\|1)*101(0\|1)*`              | Prefijo libre `(0\|1)*`, subcadena fija `101` y sufijo libre `(0\|1)*`.       |
+| **Ceros seguidos de unos (al menos uno de cada)**   | `0+1+`                           | Uno o más ceros seguidos de uno o más unos (`01`, `001`, `011`, `00011`...).  |
+| **Ceros seguidos de unos (pueden ser cero)**        | `0*1*`                           | Cero o más ceros seguidos de cero o más unos (`λ`, `0`, `1`, `001`...).       |
+| **Longitud par sobre {0, 1}**                       | `((0\|1)(0\|1))*`                | Bloques repetidos de exactamente dos símbolos cualesquiera.                   |
+| **Inicia y termina con el mismo símbolo**           | `(0(0\|1)*0)\|(1(0\|1)*1)\|0\|1` | Inicia y finaliza en 0, o en 1, o cadenas unitarias de un carácter.           |
+| **Palabra vacía**                                   | `λ`                              | Usa el botón `λ` o escribe directamente `λ`.                                  |
+
+#### Reglas de escritura:
+
+1. **Concatenación directa:** Escribe los símbolos pegados, por ejemplo `01` (significa 0 seguido de 1).
+2. **Alternativa / Unión (`|`):** Usa la barra vertical `|`, por ejemplo `0|1` (significa 0 ó 1).
+3. **Cerradura de Kleene (`*`):** Cero o más repeticiones, por ejemplo `0*` (acepta `λ`, `0`, `00`, etc.).
+4. **Cerradura positiva (`+`):** Una o más repeticiones, por ejemplo `0+` (acepta `0`, `00`, etc., pero no la vacía).
+5. **Agrupación con paréntesis `( )`:** Agrupa términos para aplicarles operadores, por ejemplo `(0|1)*`.
+
 ### 2.4 Ejemplo completo: `(0|1)*011`
 
 Con el alfabeto numérico `0,1` y la expresión `(0|1)*011` (o equivalentemente `(a|b)*abb`), la construcción por el método de posiciones genera un AFND de 6 estados sin transiciones vacías con letras mayúsculas de la `A` a la `F` (inicial `A`, final `F`), siguiendo exactamente la convención de los apuntes de clase. La clasificación lo identifica como no determinista por tener múltiples destinos con el mismo símbolo (por ejemplo `A` va con `0` a `B` y a `D`), la conversión produce un AFD de 5 estados (con nombres compuestos como `BD`, `CE`, `CF`), ninguno es inaccesible y la minimización fusiona dos de ellos mediante la matriz triangular, de modo que el AFD mínimo (AFDM) tiene 4 estados (`AC`, `BD`, `CE`, `CF`). El simulador acepta `011` y `0011` y rechaza `01` y la cadena vacía.
@@ -115,7 +138,7 @@ Cada error aparece debajo del campo que hay que corregir y, si se refiere a un c
 | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | El alfabeto está vacío.                                            | Escribe al menos un símbolo, por ejemplo `a,b`.                                               |
 | El símbolo "a" está repetido en el alfabeto.                       | Deja cada símbolo una sola vez.                                                               |
-| "\*" es un símbolo reservado y no puede formar parte del alfabeto. | Usa otro carácter; `ε`, `\|`, `*`, `+`, `?`, `(`, `)`, la coma y el espacio están reservados. |
+| "\*" es un símbolo reservado y no puede formar parte del alfabeto. | Usa otro carácter; `λ`, `\|`, `*`, `+`, `?`, `(`, `)`, la coma y el espacio están reservados. |
 | Cada símbolo debe tener un solo carácter, y "ab" tiene 2.          | Separa los símbolos con comas: `a,b`.                                                         |
 | "c" (posición 3) no pertenece al alfabeto {a, b}.                  | Agrega el símbolo al alfabeto o quítalo de la expresión.                                      |
 | Falta cerrar el paréntesis abierto en la posición 1.               | Agrega el `)` que falta.                                                                      |
@@ -162,7 +185,7 @@ El enlace **«Modo avanzado: Pegar autómata en JSON»** cambia el formulario po
 }
 ```
 
-Cada transición es `[origen, símbolo, destino]`; un autómata no determinista repite el origen y el símbolo con varios destinos, y una transición vacía usa `ε` como símbolo. El enlace **«Cambiar a formulario visual con cuadrícula»** vuelve al formulario normal.
+Cada transición es `[origen, símbolo, destino]`; un autómata no determinista repite el origen y el símbolo con varios destinos. El enlace **«Cambiar a formulario visual con cuadrícula»** vuelve al formulario normal.
 
 ### 3.4 Ejemplo 1: AFD de clase con seis estados
 
@@ -206,7 +229,7 @@ Los errores del alfabeto son los mismos de la Modalidad A (sección 2.5).
 
 Los resultados aparecen en cinco pestañas numeradas, una por etapa. Cada pestaña muestra un resumen, la tabla de transición (con `→` en el estado inicial, `*` en los finales y `—` donde no hay transición), el diagrama y la lista de pasos.
 
-1. **Construcción del AFND-ε (Thompson)**, en la Modalidad A, o **Autómata ingresado**, en la Modalidad B.
+1. **Construcción del AFND (método de posiciones sin transiciones vacías)**, en la Modalidad A, o **Autómata ingresado**, en la Modalidad B.
 2. **Clasificación del autómata:** dice si el autómata es determinista y por qué.
 3. **Conversión AFND → AFD:** un paso por cada estado nuevo, con la notación de clase (`AC,1 → A,1→AC · C,1→B`). Si el autómata ya era determinista, la pestaña lo indica.
 4. **Eliminación de estados inaccesibles:** los estados que se alcanzan desde el inicial y los que se eliminan.

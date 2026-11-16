@@ -177,6 +177,33 @@ export function LanguageForm(props: {
             </button>
           ))}
         </div>
+        <details className={styles.guia}>
+          <summary className={styles.guiaSummary}>
+            💡 ¿Cómo escribir tu lenguaje? Ver ejemplos y patrones frecuentes
+          </summary>
+          <ul className={styles.guiaLista}>
+            <li>
+              <strong>Termina en 011:</strong> <code>(0|1)*011</code> (o sobre a,b:{' '}
+              <code>(a|b)*abb</code>)
+            </li>
+            <li>
+              <strong>Comienza en 0:</strong> <code>0(0|1)*</code>
+            </li>
+            <li>
+              <strong>Contiene la subcadena 101:</strong> <code>(0|1)*101(0|1)*</code>
+            </li>
+            <li>
+              <strong>Ceros seguidos de unos:</strong> <code>0+1+</code> (o <code>0*1*</code> si se
+              permite cero)
+            </li>
+            <li>
+              <strong>Longitud par:</strong> <code>((0|1)(0|1))*</code>
+            </li>
+            <li>
+              <strong>Cadena vacía:</strong> pulsa el botón <code>λ</code> o escribe <code>λ</code>
+            </li>
+          </ul>
+        </details>
       </Field>
       <button type="submit" className={styles.enviar}>
         Construir

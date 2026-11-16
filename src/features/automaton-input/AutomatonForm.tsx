@@ -312,7 +312,7 @@ export function AutomatonForm(props: {
             style={{
               background: 'none',
               border: 'none',
-              color: 'var(--color-primary, #0284c7)',
+              color: 'var(--color-acento)',
               fontSize: '0.85rem',
               cursor: 'pointer',
               textDecoration: 'underline',

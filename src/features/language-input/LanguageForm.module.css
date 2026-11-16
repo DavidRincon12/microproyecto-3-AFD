@@ -40,6 +40,36 @@
   font-family: var(--fuente-mono);
 }
 
+.guia {
+  font-size: 0.85rem;
+  border: 1px dashed var(--color-borde);
+  border-radius: var(--radio);
+  padding: var(--espacio-2) var(--espacio-3);
+  background: var(--color-fondo);
+  margin-top: var(--espacio-2);
+}
+
+.guiaSummary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-acento);
+}
+
+.guiaLista {
+  margin: var(--espacio-2) 0 0;
+  padding-left: var(--espacio-4);
+  display: grid;
+  gap: var(--espacio-1);
+}
+
+.guiaLista code {
+  font-family: var(--fuente-mono);
+  background: var(--color-acento-suave);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  color: var(--color-texto);
+}
+
 .marcado {
   font-family: var(--fuente-mono);
 }
