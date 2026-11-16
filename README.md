@@ -11,4 +11,4 @@ Software educativo del Microproyecto #3 de Teoría de la Computación, que const
 ## Autores
 
 - David Santiago Rincón Bautista
-- Ángel Jhoan Díaz Vargas
+- Ángel Jhoan Díaz Vanegas

@@ -4,7 +4,7 @@
 
 **Materia:** Teoría de la Computación
 **Proyecto:** Microproyecto #3
-**Autores:** David Santiago Rincón Bautista y Ángel Jhoan Díaz Vargas
+**Autores:** David Santiago Rincón Bautista y Ángel Jhoan Díaz Vanegas
 
 ---
 

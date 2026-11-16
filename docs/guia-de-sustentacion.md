@@ -4,7 +4,7 @@
 
 - **Materia:** Teoría de la Computación (Universidad Francisco de Paula Santander - UFPS)
 - **Proyecto:** Microproyecto #3
-- **Autores:** David Santiago Rincón Bautista y Ángel Jhoan Díaz Vargas
+- **Autores:** David Santiago Rincón Bautista y Ángel Jhoan Díaz Vanegas
 - **Aplicativo web en producción:** [https://davidrincon12.github.io/microproyecto-3-AFD/](https://davidrincon12.github.io/microproyecto-3-AFD/)
 - **Repositorio de código:** [https://github.com/DavidRincon12/microproyecto-3-AFD](https://github.com/DavidRincon12/microproyecto-3-AFD)
 

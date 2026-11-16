@@ -1,7 +1,7 @@
 # Ejemplos de Clase Resueltos y Validación de Fixtures
 
 **Materia:** Teoría de la Computación  
-**Equipo:** David Santiago Rincón Bautista (Desarrollador 1) & Ángel Jhoan Díaz Vargas (Desarrollador 2)  
+**Equipo:** David Santiago Rincón Bautista (Desarrollador 1) & Ángel Jhoan Díaz Vanegas (Desarrollador 2)  
 **Entregable:** Fase de Diseño — Ejemplos Desarrollados
 
 ---
