@@ -432,7 +432,7 @@ Cada algoritmo genera su propia explicación como una lista de pasos (sección 3
 
 ## 7. Validación
 
-El proyecto tiene 242 pruebas automáticas con Vitest, que se ejecutan con `npm test` y en el CI de cada pull request junto con el lint, la revisión de tipos y el build. Las pruebas unitarias cubren cada algoritmo con sus casos borde, y las de interfaz usan Testing Library. Además, `src/core/pipeline/fixtures.test.ts` pasa todos los ejemplos de clase resueltos a mano (`src/core/__fixtures__/`) por el proceso completo y el simulador, y comprueba su clasificación, el tamaño del AFD mínimo y las cadenas que deben aceptarse y rechazarse.
+El proyecto tiene 267 pruebas automáticas con Vitest, que se ejecutan con `npm test` y en el CI de cada pull request junto con el lint, la revisión de tipos y el build. Las pruebas unitarias cubren cada algoritmo con sus casos borde, y las de interfaz usan Testing Library. Además, `src/core/pipeline/fixtures.test.ts` pasa todos los ejemplos de clase resueltos a mano (`src/core/__fixtures__/`) por el proceso completo y el simulador, y comprueba su clasificación, el tamaño del AFD mínimo y las cadenas que deben aceptarse y rechazarse.
 
 La validación funcional está en la matriz de pruebas (`docs/matriz-de-pruebas.md`), con 31 casos de las dos modalidades y capturas de la aplicación como evidencia en `docs/evidencias/`.
 

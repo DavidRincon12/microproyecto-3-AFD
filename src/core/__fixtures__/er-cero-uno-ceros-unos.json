@@ -1,0 +1,11 @@
+{
+  "description": "Cadenas con ceros seguidos de unos: 0+1+",
+  "source": "Ejemplo con alfabeto numérico {0, 1} sin transiciones vacías",
+  "alphabet": "0,1",
+  "regex": "0+1+",
+  "expected": {
+    "minimalStates": 4,
+    "accepts": ["01", "001", "011", "0011", "000111"],
+    "rejects": ["", "0", "1", "10", "010", "110"]
+  }
+}

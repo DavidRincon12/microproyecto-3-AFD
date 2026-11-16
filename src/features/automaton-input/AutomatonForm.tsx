@@ -17,10 +17,20 @@ import afdIncompletoFixture from '../../core/__fixtures__/afd-incompleto.json';
 import afdYaMinimoFixture from '../../core/__fixtures__/afd-ya-minimo.json';
 import afnd7Fixture from '../../core/__fixtures__/afnd-clase-7-estados.json';
 import afndAbcFixture from '../../core/__fixtures__/afnd-clase-abc.json';
+import afndCuaderno17Fixture from '../../core/__fixtures__/afnd-cuaderno-17-estados.json';
 import afndQFixture from '../../core/__fixtures__/afnd-clase-q.json';
 import minClase6Fixture from '../../core/__fixtures__/min-clase-6-estados.json';
+import minCuaderno4Fixture from '../../core/__fixtures__/min-cuaderno-4-estados.json';
 
 const EXAMPLES: Record<string, { label: string; json: AutomatonJson }> = {
+  minCuaderno4: {
+    label: 'Minimización de 4 estados con fusión BC (Cuaderno)',
+    json: minCuaderno4Fixture.automaton as AutomatonJson,
+  },
+  afndCuaderno17: {
+    label: 'Conversión AFND a AFD de 17 estados (Cuaderno - Símbolos 0 a 3)',
+    json: afndCuaderno17Fixture.automaton as AutomatonJson,
+  },
   min6: {
     label: 'Ejercicio de minimización de 6 estados (Clase)',
     json: minClase6Fixture.automaton as AutomatonJson,
@@ -29,13 +39,13 @@ const EXAMPLES: Record<string, { label: string; json: AutomatonJson }> = {
     label: 'AFND con A, B, C y transiciones incompletas',
     json: afndAbcFixture.automaton as AutomatonJson,
   },
-  afndQ: {
-    label: 'AFND con q0, q1, q2',
-    json: afndQFixture.automaton as AutomatonJson,
-  },
   afnd7: {
     label: 'AFND grande de 7 estados (A a G)',
     json: afnd7Fixture.automaton as AutomatonJson,
+  },
+  afndQ: {
+    label: 'AFND con q0, q1, q2',
+    json: afndQFixture.automaton as AutomatonJson,
   },
   inaccesibles: {
     label: 'AFD con estados inaccesibles (D y E)',

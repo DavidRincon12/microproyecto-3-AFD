@@ -87,11 +87,11 @@ En lugar de los pasos 2 y 3 puedes elegir un ejemplo en **«Cargar ejemplo»**, 
 | ------------------------ | ------------------ | --------- | -------------------- |
 | dos expresiones seguidas | concatenación      | `ab`      | `ab`                 |
 | `\|`                     | unión (una u otra) | `a\|b`    | `a`, `b`             |
-| `*`                      | cero o más veces   | `a*`      | ε, `a`, `aa`…        |
+| `*`                      | cero o más veces   | `a*`      | λ, `a`, `aa`…        |
 | `+`                      | una o más veces    | `a+`      | `a`, `aa`…           |
-| `?`                      | cero o una vez     | `a?`      | ε, `a`               |
-| `( )`                    | agrupar            | `(ab)*`   | ε, `ab`, `abab`…     |
-| `ε`                      | cadena vacía       | `a(b\|ε)` | `a`, `ab`            |
+| `?`                      | cero o una vez     | `a?`      | λ, `a`               |
+| `( )`                    | agrupar            | `(ab)*`   | λ, `ab`, `abab`…     |
+| `λ`                      | cadena vacía       | `a(b\|λ)` | `a`, `ab`            |
 
 Los operadores `*`, `+` y `?` se aplican primero, después la concatenación y al final la unión: `ab*|c` significa «`a` seguida de cero o más `b`, o bien `c`». Si quieres otro orden, usa paréntesis. Los espacios no importan y la expresión puede tener hasta 200 caracteres.
 
@@ -99,6 +99,7 @@ Los operadores `*`, `+` y `?` se aplican primero, después la concatenación y a
 | ----------------------------------------------------------------- | -------- | ------------ |
 | Cadenas que terminan en `011`                                     | `0,1`    | `(0\|1)*011` |
 | Palabras que inician y terminan en `0`, con unos y doses en medio | `0,1,2`  | `0(1\|2)*0`  |
+| Cadenas con ceros seguidos de unos: `0+1+`                        | `0,1`    | `0+1+`       |
 | Cadenas que terminan en `abb`                                     | `a,b`    | `(a\|b)*abb` |
 | Palabras que inician y terminan en `a`, con `e` o `i` en medio    | `a,e,i`  | `a(e\|i)*a`  |
 

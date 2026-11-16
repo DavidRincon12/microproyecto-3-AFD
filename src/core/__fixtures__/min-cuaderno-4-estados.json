@@ -1,0 +1,26 @@
+{
+  "description": "Minimización de 4 estados con fusión BC (Ejercicio del cuaderno)",
+  "source": "Cuaderno de clase, página «Minimización de AFD por medio de matriz»",
+  "automaton": {
+    "states": ["A", "B", "C", "D"],
+    "alphabet": ["0", "1"],
+    "initial": "A",
+    "finals": ["D"],
+    "transitions": [
+      ["A", "0", "B"],
+      ["A", "1", "C"],
+      ["B", "0", "D"],
+      ["B", "1", "B"],
+      ["C", "0", "D"],
+      ["C", "1", "B"],
+      ["D", "0", "D"],
+      ["D", "1", "D"]
+    ]
+  },
+  "expected": {
+    "deterministic": true,
+    "minimalStates": 3,
+    "accepts": ["00", "10", "010", "110", "0110"],
+    "rejects": ["", "0", "1", "01", "11"]
+  }
+}
